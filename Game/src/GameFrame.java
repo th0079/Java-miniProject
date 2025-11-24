@@ -1,9 +1,12 @@
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 
@@ -12,11 +15,12 @@ public class GameFrame extends JFrame{
 	private JMenuItem startItem = new JMenuItem("Start");
 	private JButton startBtn = new JButton("Start");
 	private ScorePanel scorePanel = new ScorePanel();
+	private ComboPanel comboPanel = new ComboPanel();
 	private EditPanel editPanel = new EditPanel();
-	private GamePanel gamePanel = new GamePanel(scorePanel, tStore);
+	private GamePanel gamePanel = new GamePanel(scorePanel, comboPanel, tStore);
 	
 	public GameFrame() {
-		super("게임");
+		super("지구를 지켜라!");
 		setSize(800,600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		makeMenu();
@@ -62,9 +66,15 @@ public class GameFrame extends JFrame{
 		vPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		vPane.setDividerLocation(200);
 		vPane.setEnabled(false);
-		vPane.setTopComponent(scorePanel);
-		vPane.setBottomComponent(editPanel);
 		
+		JPanel rightTopPanel = new JPanel();
+        rightTopPanel.setLayout(new GridLayout(2, 1));
+        rightTopPanel.add(scorePanel);
+        rightTopPanel.add(comboPanel);
+		
+        vPane.setTopComponent(rightTopPanel);
+        vPane.setBottomComponent(editPanel);
+        
 		hPane.setRightComponent(vPane);
 		hPane.setLeftComponent(gamePanel);
 	}

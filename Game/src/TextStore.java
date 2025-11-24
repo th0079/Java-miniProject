@@ -4,7 +4,7 @@ public class TextStore {
 	private Vector<String> v = new Vector<String>();
 	
 	public TextStore() {
-		v.add("Book");
+		v.add("book");
 		v.add("love");
 		v.add("apple");
 		v.add("banana");
