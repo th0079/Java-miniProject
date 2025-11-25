@@ -22,7 +22,7 @@ public class SetAsteroid {
 	public void spawnAsteroid(int level) {
 		int x = (int) (Math.random() * (groundPanel.getWidth() - 100)) + 50;
 
-		String word = tStore.get();
+		String word = tStore.getWord();
 		JLabel text = new JLabel(word);
 		text.setSize(100, 20);
 		text.setLocation(x, 0);
