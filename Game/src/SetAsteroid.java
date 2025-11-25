@@ -50,7 +50,7 @@ public class SetAsteroid {
 		case 3: {
 			if (rand < 0.6)
 				asteroid = new BlueAsteroid(groundPanel, x, text);
-			else if (rand < 0.3)
+			else if (rand < 0.9)
 				asteroid = new RedAsteroid(groundPanel, x, text);
 			else
 				asteroid = new GrayAsteroid(groundPanel, x, text);
