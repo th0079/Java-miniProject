@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 import javax.swing.JLabel;
 
 public abstract class Asteroid extends Thread {
@@ -8,7 +10,6 @@ public abstract class Asteroid extends Thread {
 	protected int speed;
 	protected GamePanel.GroundPanel panel;
 	protected JLabel text;
-	protected boolean isDead =false;
 	
 	public Asteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		this.panel = panel;
@@ -24,9 +25,6 @@ public abstract class Asteroid extends Thread {
 	public int getScore() {
 		return score;
 	}
-	public void setDead() {
-		isDead = true;
-	}
 	public void fall() {
 		y+=speed;
 		text.setLocation((int)x, (int)y);
@@ -35,7 +33,7 @@ public abstract class Asteroid extends Thread {
 	@Override
 	public void run() {
 		try {
-			while(!isDead) {
+			while(true) {
 				fall();
 				panel.repaint();
 				
@@ -56,6 +54,7 @@ public abstract class Asteroid extends Thread {
 class BlueAsteroid extends Asteroid{
 	public BlueAsteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		super(panel, x, text);
+		text.setForeground(Color.BLUE);
 		this.score = 10;
 		this.speed = 10;
 		this.damage = 10;
@@ -66,6 +65,7 @@ class BlueAsteroid extends Asteroid{
 class RedAsteroid extends Asteroid{
 	public RedAsteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		super(panel, x, text);
+		text.setForeground(Color.RED);
 		this.score = 30;
 		this.speed = 20;
 		this.damage = 20;
@@ -76,6 +76,7 @@ class RedAsteroid extends Asteroid{
 class GrayAsteroid extends Asteroid{
 	public GrayAsteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		super(panel, x, text);
+		text.setForeground(Color.GRAY);
 		this.score = 50;
 		this.speed = 5;
 		this.damage = 30;
