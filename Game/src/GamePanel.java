@@ -33,18 +33,26 @@ public class GamePanel extends JPanel {
 	public void startGame() {
 		set.startGame();
 	}
+	public void stopGame() {
+		set.stopGame();
+	}
+	public void resumeGame() {
+		set.resumeGame();
+	}
 
 	class GroundPanel extends JPanel {
-		private Image background;
+		private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
+		private Image bgImg = bgIcon.getImage();
 		
 		public GroundPanel() {
 			this.setLayout(null);
-			background = new ImageIcon("image/background.jpg").getImage();
 		}
 		public void paintComponent(Graphics g) {
-			g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(),null);
-			setOpaque(false);
 			super.paintComponent(g);
+			g.drawImage(bgImg,0,0,getWidth(),getHeight(),this);
+		}
+		public SetAsteroid getSetAsteroid() {
+			return set;
 		}
 	}
 
@@ -73,6 +81,7 @@ public class GamePanel extends JPanel {
 							scorePanel.increse(score);
 
 							groundPanel.remove(a.getLabel());
+							groundPanel.remove(a.getImageLabel());
 							groundPanel.repaint();
 
 							asteroids.remove(i);

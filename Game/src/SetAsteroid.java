@@ -1,5 +1,4 @@
 import java.awt.Font;
-import java.awt.Image;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -10,9 +9,11 @@ public class SetAsteroid {
 	private TextStore tStore;
 	private Vector<Asteroid> asteroids;
 	private Earth earth = new Earth();
-	private Image blueAsteriodImage = new ImageIcon("image/blueAsteroid.png").getImage();
-	private Image RedAsteriodImage = new ImageIcon("image/RedAsteroid.png").getImage();
-	private Image GrayAsteriodImage = new ImageIcon("image/GrayAsteroid.png").getImage();
+	private ImageIcon blueAsteroidImage = new ImageIcon("image/blueAsteroid.png");
+	private ImageIcon redAsteroidImage = new ImageIcon("image/RedAsteroid.png");
+	private ImageIcon grayAsteroidImage = new ImageIcon("image/GrayAsteroid.png");
+	private Font font = new Font("Consolas",Font.BOLD, 20);
+	private boolean stopFlag = false;
 	
 	public SetAsteroid(GamePanel.GroundPanel groundPanel, TextStore tStore, Vector<Asteroid> asteroids) {
 		this.groundPanel = groundPanel;
@@ -25,45 +26,90 @@ public class SetAsteroid {
         new AsteroidDestroyer().start();
     }
 	
+	public void stopGame() {
+		stopFlag = true;
+	}
+	
+	synchronized public void resumeGame() {
+		stopFlag = false;
+		notifyAll();
+	}
+	
+	synchronized public void checkFlag() {
+		if(stopFlag) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void spawnAsteroid(int level) {
-		int x = (int) (Math.random() * (groundPanel.getWidth() - 100)) + 50;
+		int x = (int) (Math.random() * (groundPanel.getWidth() - 170)) + 40;
 
-		String word = tStore.getWord();
-		JLabel text = new JLabel(word);
-		text.setFont(new Font("",Font.BOLD, 10));
-		text.setSize(100,30);
-		text.setLocation(x, 0);
-
-		groundPanel.add(text);
-
+		String word = tStore.getShortWord();
+		JLabel text = new JLabel(word, JLabel.CENTER);
+		text.setFont(font);
 		Asteroid asteroid = null;
+		JLabel imageLabel = null;
 		double rand = Math.random();
 
 		switch (level) {
-		case 1: {
-			if (rand < 0.9)
-				asteroid = new BlueAsteroid(groundPanel, x, text, blueAsteriodImage);
-			else
-				asteroid = new RedAsteroid(groundPanel, x, text, RedAsteriodImage);
+		case 1:  // 레벨1
+			if (rand < 0.9) {
+				imageLabel = new JLabel(blueAsteroidImage);
+				imageLabel.setSize(80,80);
+				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
+			}
+			else {
+				imageLabel = new JLabel(redAsteroidImage);
+				imageLabel.setSize(80,80);
+				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
+			}
+			break;
+			
+		case 2:  // 레벨2
+			if (rand < 0.7) {
+				imageLabel = new JLabel(blueAsteroidImage);
+				imageLabel.setSize(80,80);
+				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
+			}
+			else {
+				imageLabel = new JLabel(redAsteroidImage);
+				imageLabel.setSize(80,80);
+				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
+			}
+			break;
+			
+		case 3: // 레벨3
+			if (rand < 0.6) {
+				imageLabel = new JLabel(blueAsteroidImage);
+				imageLabel.setSize(80,80);
+				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
+			}
+			else if (rand < 0.9) {
+				imageLabel = new JLabel(redAsteroidImage);
+				imageLabel.setSize(80,80);
+				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
+			}
+			else {
+				word = tStore.getLongWord();
+				text = new JLabel(word, JLabel.CENTER);
+				text.setFont(font);
+				imageLabel = new JLabel(grayAsteroidImage);
+				imageLabel.setSize(160,160);
+				asteroid = new GrayAsteroid(groundPanel, x, text, imageLabel);
+			}
 			break;
 		}
-		case 2: {
-			if (rand < 0.7)
-				asteroid = new BlueAsteroid(groundPanel, x, text, blueAsteriodImage);
-			else
-				asteroid = new RedAsteroid(groundPanel, x, text, RedAsteriodImage);
-			break;
-		}
-		case 3: {
-			if (rand < 0.6)
-				asteroid = new BlueAsteroid(groundPanel, x, text, blueAsteriodImage);
-			else if (rand < 0.9)
-				asteroid = new RedAsteroid(groundPanel, x, text, RedAsteriodImage);
-			else
-				asteroid = new GrayAsteroid(groundPanel, x, text, GrayAsteriodImage);
-			break;
-		}
-		}
+		
+		text.setSize(200,30);
+		
+		groundPanel.add(text);
+		groundPanel.add(imageLabel);
+		
 		asteroids.add(asteroid);
 		asteroid.start();
 	}
@@ -73,8 +119,9 @@ public class SetAsteroid {
 		public void run() {
 			try {
 				while (true) {
+					checkFlag();
 					spawnAsteroid(3);
-					Thread.sleep(2000);
+					Thread.sleep(2000); // 2초마다 소환
 				}
 			} catch (InterruptedException e) {
 				return;
@@ -87,6 +134,7 @@ public class SetAsteroid {
 		public void run() {
 			try {
 				while (true) {
+					checkFlag();
 					checkY();
 					groundPanel.repaint();
 					Thread.sleep(100);
@@ -104,11 +152,13 @@ public class SetAsteroid {
 			JLabel label = a.getLabel();
 			int limitY = groundPanel.getHeight();
 			
-			if (label.getY() >= limitY - 40) {
+			if (label.getY() >= limitY-40) {
 				groundPanel.remove(label);
+				groundPanel.remove(a.getImageLabel());
 				asteroids.remove(i);
-				// (체력 감소 코드 추가 위치
+				// 체력 감소 코드 추가 위치
 				earth.damaged(a.damage);
+				System.out.println("지구에게 " + a.damage + "데미지");
 			}
 		}
 	}

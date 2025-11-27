@@ -13,4 +13,15 @@ public class Earth {
 	public boolean gameOver() {
 		return gameOver;
 	}
+	class getDamaged extends Thread{
+		@Override
+		public void run() {
+			while(true) {
+				if (gameOver) {
+					
+				}
+			}
+		}
+		
+	}
 }

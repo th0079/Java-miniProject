@@ -16,14 +16,17 @@ public class GameFrame extends JFrame{
 	private TextStore tStore = new TextStore();
 	private JMenuItem startItem = new JMenuItem("Start");
 	private JButton startBtn = new JButton("Start");
+	private JButton stopBtn = new JButton("Stop");
 	private ScorePanel scorePanel = new ScorePanel();
 	private ComboPanel comboPanel = new ComboPanel();
 	private EditPanel editPanel = new EditPanel();
 	private GamePanel gamePanel = new GamePanel(scorePanel, comboPanel, tStore);
+	private boolean stop = false;
+	private boolean start = false;
 	
 	public GameFrame() {
 		super("지구를 지켜라!");
-		setSize(800,600);
+		setSize(1000,800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		makeMenu();
 		makeToolBar();
@@ -52,12 +55,31 @@ public class GameFrame extends JFrame{
 		JToolBar tBar = new JToolBar();
 		tBar.setFloatable(false);
 		tBar.add(startBtn);
+		tBar.add(stopBtn);
 		getContentPane().add(tBar,BorderLayout.NORTH);
 		
 		startBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gamePanel.startGame();
+				if(!start) {
+					start = true;
+					gamePanel.startGame();
+				}
+				else if (stop) {
+					stop = false;
+					gamePanel.resumeGame();
+				}
+			}
+		});
+		stopBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (stop) return;
+				else {
+					stop = true;
+					gamePanel.stopGame();
+				}
+				
 			}
 		});
 	}
@@ -65,7 +87,7 @@ public class GameFrame extends JFrame{
 	private void makeSplitPane() {
 		JSplitPane hPane = new JSplitPane();
 		hPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		hPane.setDividerLocation(500);
+		hPane.setDividerLocation(700);
 		hPane.setEnabled(false);
 		getContentPane().add(hPane,BorderLayout.CENTER);
 		

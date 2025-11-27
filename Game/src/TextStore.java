@@ -4,15 +4,21 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class TextStore {
-	private Vector<String> v = new Vector<String>();
+	private Vector<String> shortV = new Vector<String>();
+	private Vector<String> longV = new Vector<String>();
 	
 	public TextStore() {
 		loadWord();
 	}
 	
-	public String getWord() {
-		int index = (int)(Math.random()*v.size());
-		return v.get(index);
+	public String getShortWord() {
+		int index = (int)(Math.random()*shortV.size());
+		return shortV.get(index);
+	}
+	
+	public String getLongWord() {
+		int index = (int)(Math.random()*longV.size());
+		return longV.get(index);
 	}
 	
 	private void loadWord() {
@@ -26,7 +32,9 @@ public class TextStore {
 				if (line ==null) break;
 				
 				if(line.trim().length()>0) {
-					v.add(line);
+					if (line.trim().length()<7)
+						shortV.add(line);
+					else longV.add(line);
 				}
 			}
 			br.close();
