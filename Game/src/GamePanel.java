@@ -1,9 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -14,15 +17,13 @@ public class GamePanel extends JPanel {
 	private InputPanel inputPanel = new InputPanel();
 	private ScorePanel scorePanel = null;
 	private ComboPanel comboPanel = null;
-	private TextStore tStore = null;
 	private Vector<Asteroid> asteroids = new Vector<Asteroid>();
-	private SetAsteroid set;
+	private SetAsteroid set = null;
 
 	public GamePanel(ScorePanel scorePanel, ComboPanel comboPanel, TextStore tStore) {
 		this.setLayout(new BorderLayout());
 		this.scorePanel = scorePanel;
 		this.comboPanel = comboPanel;
-		this.tStore = tStore;
 		groundPanel = new GroundPanel();
 		add(groundPanel, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
@@ -34,9 +35,16 @@ public class GamePanel extends JPanel {
 	}
 
 	class GroundPanel extends JPanel {
+		private Image background;
+		
 		public GroundPanel() {
-			this.setBackground(Color.white);
 			this.setLayout(null);
+			background = new ImageIcon("image/background.jpg").getImage();
+		}
+		public void paintComponent(Graphics g) {
+			g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(),null);
+			setOpaque(false);
+			super.paintComponent(g);
 		}
 	}
 

@@ -1,5 +1,8 @@
+import java.awt.Font;
+import java.awt.Image;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class SetAsteroid {
@@ -7,7 +10,10 @@ public class SetAsteroid {
 	private TextStore tStore;
 	private Vector<Asteroid> asteroids;
 	private Earth earth = new Earth();
-
+	private Image blueAsteriodImage = new ImageIcon("image/blueAsteroid.png").getImage();
+	private Image RedAsteriodImage = new ImageIcon("image/RedAsteroid.png").getImage();
+	private Image GrayAsteriodImage = new ImageIcon("image/GrayAsteroid.png").getImage();
+	
 	public SetAsteroid(GamePanel.GroundPanel groundPanel, TextStore tStore, Vector<Asteroid> asteroids) {
 		this.groundPanel = groundPanel;
 		this.tStore = tStore;
@@ -24,7 +30,8 @@ public class SetAsteroid {
 
 		String word = tStore.getWord();
 		JLabel text = new JLabel(word);
-		text.setSize(100, 20);
+		text.setFont(new Font("",Font.BOLD, 10));
+		text.setSize(100,30);
 		text.setLocation(x, 0);
 
 		groundPanel.add(text);
@@ -35,25 +42,25 @@ public class SetAsteroid {
 		switch (level) {
 		case 1: {
 			if (rand < 0.9)
-				asteroid = new BlueAsteroid(groundPanel, x, text);
+				asteroid = new BlueAsteroid(groundPanel, x, text, blueAsteriodImage);
 			else
-				asteroid = new RedAsteroid(groundPanel, x, text);
+				asteroid = new RedAsteroid(groundPanel, x, text, RedAsteriodImage);
 			break;
 		}
 		case 2: {
 			if (rand < 0.7)
-				asteroid = new BlueAsteroid(groundPanel, x, text);
+				asteroid = new BlueAsteroid(groundPanel, x, text, blueAsteriodImage);
 			else
-				asteroid = new RedAsteroid(groundPanel, x, text);
+				asteroid = new RedAsteroid(groundPanel, x, text, RedAsteriodImage);
 			break;
 		}
 		case 3: {
 			if (rand < 0.6)
-				asteroid = new BlueAsteroid(groundPanel, x, text);
+				asteroid = new BlueAsteroid(groundPanel, x, text, blueAsteriodImage);
 			else if (rand < 0.9)
-				asteroid = new RedAsteroid(groundPanel, x, text);
+				asteroid = new RedAsteroid(groundPanel, x, text, RedAsteriodImage);
 			else
-				asteroid = new GrayAsteroid(groundPanel, x, text);
+				asteroid = new GrayAsteroid(groundPanel, x, text, GrayAsteriodImage);
 			break;
 		}
 		}

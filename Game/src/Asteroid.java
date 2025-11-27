@@ -1,20 +1,23 @@
 import java.awt.Color;
+import java.awt.Image;
 
 import javax.swing.JLabel;
 
 public abstract class Asteroid extends Thread {
-	protected double x;
-	protected double y = -50;
+	private double x;
+	private double y = -50;
 	protected int score;
 	protected int damage;
 	protected int speed;
-	protected GamePanel.GroundPanel panel;
-	protected JLabel text;
+	private GamePanel.GroundPanel panel;
+	private JLabel text;
+	private Image image;
 	
-	public Asteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
+	public Asteroid(GamePanel.GroundPanel panel, double x, JLabel text, Image image) {
 		this.panel = panel;
 		this.x = x;
 		this.text = text;
+		this.image = image;
 	}
 	public String getText() {
 		return text.getText();
@@ -52,8 +55,8 @@ public abstract class Asteroid extends Thread {
 }
 // 푸른 소행성 
 class BlueAsteroid extends Asteroid{
-	public BlueAsteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
-		super(panel, x, text);
+	public BlueAsteroid(GamePanel.GroundPanel panel, double x, JLabel text, Image image) {
+		super(panel, x, text, image);
 		text.setForeground(Color.BLUE);
 		this.score = 10;
 		this.speed = 10;
@@ -63,8 +66,8 @@ class BlueAsteroid extends Asteroid{
 
 // 붉은 소행성
 class RedAsteroid extends Asteroid{
-	public RedAsteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
-		super(panel, x, text);
+	public RedAsteroid(GamePanel.GroundPanel panel, double x, JLabel text, Image image) {
+		super(panel, x, text, image);
 		text.setForeground(Color.RED);
 		this.score = 30;
 		this.speed = 20;
@@ -74,8 +77,8 @@ class RedAsteroid extends Asteroid{
 
 // 회색 소행성
 class GrayAsteroid extends Asteroid{
-	public GrayAsteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
-		super(panel, x, text);
+	public GrayAsteroid(GamePanel.GroundPanel panel, double x, JLabel text, Image image) {
+		super(panel, x, text, image);
 		text.setForeground(Color.GRAY);
 		this.score = 50;
 		this.speed = 5;
