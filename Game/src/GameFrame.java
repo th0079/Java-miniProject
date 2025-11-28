@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 
-public class GameFrame extends JFrame{
+public class GameFrame extends JFrame {
 	private TextStore tStore = new TextStore();
 	private JButton startBtn = new JButton("시작");
 	private JButton stopBtn = new JButton("일시정지");
@@ -25,57 +25,85 @@ public class GameFrame extends JFrame{
 	private boolean stop = false;
 	private boolean start = false;
 	private String id = null;
-	private Font font = new Font("Galmuri9",Font.BOLD,20);
+	private Font font = new Font("Galmuri9", Font.BOLD, 20);
+
 	public GameFrame(String id) {
 		super("지구를 지켜라!");
 		this.id = id;
 		playerPanel = new PlayerPanel(id);
 		startBtn.setFont(font);
 		stopBtn.setFont(font);
-		setSize(1000,800);
-		setLocation(500,500);
-		
+		setSize(1000, 800);
+		setLocation(500, 300);
+
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		makeMenu();
 		makeToolBar();
 		makeSplitPane();
 		setVisible(true);
-		
+
 	}
-	
+
 	private void makeMenu() {
 		JMenuBar mBar = new JMenuBar();
 		this.setJMenuBar(mBar);
-		
+
 		JMenu Menu = new JMenu("설정");
 		Menu.setFont(font);
 		mBar.add(Menu);
+
+		JButton rankBtn = new JButton("랭킹");
+		rankBtn.setFont(font);
+		mBar.add(rankBtn);
+
+		JMenuItem soundItem = new JMenuItem("소리설정");
+		soundItem.setFont(font);
+		Menu.add(soundItem);
 		
-//		JMenu editMenu = new JMenu("Edit");
-//		mBar.add(editMenu);
+		JMenuItem wordItem = new JMenuItem("단어추가");
+		wordItem.setFont(font);
+		Menu.add(wordItem);
 		
-//		JMenuItem openItem = new JMenuItem("Open");
-//		Menu.add(openItem);
-//		Menu.add("Save");
-//		Menu.addSeparator();
+		rankBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 랭킹 대시보드 추가
+				System.out.println("랭킹 open");
+			}
+		});
+		
+		soundItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 소리 설정 추가
+				System.out.println("소리설정 open");
+			}
+		});
+		
+		wordItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 단어 설정 추가
+				System.out.println("단어추가 open");
+			}
+		});
 	}
-	
+
 	private void makeToolBar() {
 		JToolBar tBar = new JToolBar();
 		tBar.setFloatable(false);
 		tBar.add(startBtn);
 		tBar.add(stopBtn);
-		getContentPane().add(tBar,BorderLayout.NORTH);
-		
+		getContentPane().add(tBar, BorderLayout.NORTH);
+
 		startBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!start) {
+				if (!start) {
 					start = true;
 					gamePanel.startGame();
-				}
-				else if (stop) {
+				} else if (stop) {
 					stop = false;
 					gamePanel.resumeGame();
 				}
@@ -84,41 +112,42 @@ public class GameFrame extends JFrame{
 		stopBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (stop) return;
+				if (stop)
+					return;
 				else {
 					stop = true;
 					gamePanel.stopGame();
 				}
-				
+
 			}
 		});
 	}
-	
+
 	private void makeSplitPane() {
 		JSplitPane hPane = new JSplitPane();
 		hPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		hPane.setDividerLocation(700);
 		hPane.setEnabled(false);
-		getContentPane().add(hPane,BorderLayout.CENTER);
-		
+		getContentPane().add(hPane, BorderLayout.CENTER);
+
 		JSplitPane vPane = new JSplitPane();
 		vPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		vPane.setDividerLocation(300);
 		vPane.setEnabled(false);
-		
+
 		JPanel rightTopPanel = new JPanel();
-        rightTopPanel.setLayout(new GridLayout(2, 1));
-        rightTopPanel.add(scorePanel);
-        rightTopPanel.add(comboPanel);
-		
-        JPanel rightBottomPanel = new JPanel();
-        rightBottomPanel.setLayout(new GridLayout(2,1));
-        rightBottomPanel.add(statusPanel);
-        rightBottomPanel.add(playerPanel);
-        
-        vPane.setTopComponent(rightTopPanel);
-        vPane.setBottomComponent(rightBottomPanel);
-        
+		rightTopPanel.setLayout(new GridLayout(2, 1));
+		rightTopPanel.add(scorePanel);
+		rightTopPanel.add(comboPanel);
+
+		JPanel rightBottomPanel = new JPanel();
+		rightBottomPanel.setLayout(new GridLayout(2, 1));
+		rightBottomPanel.add(statusPanel);
+		rightBottomPanel.add(playerPanel);
+
+		vPane.setTopComponent(rightTopPanel);
+		vPane.setBottomComponent(rightBottomPanel);
+
 		hPane.setRightComponent(vPane);
 		hPane.setLeftComponent(gamePanel);
 	}

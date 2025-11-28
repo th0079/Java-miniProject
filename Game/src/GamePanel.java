@@ -20,33 +20,40 @@ public class GamePanel extends JPanel {
 	private PausePanel pausePanel = new PausePanel();
 	private ScorePanel scorePanel = null;
 	private ComboPanel comboPanel = null;
+	private ExplainPanel exPanel = null;
 	private Vector<Asteroid> asteroids = new Vector<Asteroid>();
 	private SetAsteroid set = null;
-	private Font font = new Font("Galmuri9",Font.BOLD,20);
+	private Font font = new Font("Galmuri9", Font.BOLD, 20);
+
 	public GamePanel(ScorePanel scorePanel, ComboPanel comboPanel, StatusPanel statusPanel, TextStore tStore) {
 		this.setLayout(new BorderLayout());
 		this.scorePanel = scorePanel;
 		this.comboPanel = comboPanel;
 		inputField.setFont(font);
+		exPanel = new ExplainPanel();
 		groundPanel = new GroundPanel();
 		add(groundPanel, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
 		groundPanel.add(pausePanel, BorderLayout.CENTER);
-		pausePanel.setBounds(0,0,700,800);
-		
+		pausePanel.setBounds(0, 0, 700, 800);
+
 		set = new SetAsteroid(groundPanel, statusPanel, tStore, asteroids);
 	}
+
 	// setAsteroid startGame() 호출
 	public void startGame() {
+		exPanel.setVisible(false);
 		set.startGame();
 		inputField.requestFocus();
 	}
+
 	// setAsteroid stopGame() 호출
 	public void stopGame() {
 		set.stopGame();
 		pausePanel.setVisible(true);
 		inputField.setEnabled(false); // 비활성화
 	}
+
 	public void resumeGame() {
 		pausePanel.waitThreadStart(); // 스레드 시작 메소드 호출
 	}
@@ -54,14 +61,17 @@ public class GamePanel extends JPanel {
 	class GroundPanel extends JPanel {
 		private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 		private Image bgImg = bgIcon.getImage();
-		
+
 		public GroundPanel() {
 			this.setLayout(null);
+			add(exPanel);
 		}
+
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			g.drawImage(bgImg,0,0,getWidth(),getHeight(),this);
+			g.drawImage(bgImg, 0, 0, getWidth(), getHeight(), this);
 		}
+
 		public SetAsteroid getSetAsteroid() {
 			return set;
 		}
@@ -70,12 +80,12 @@ public class GamePanel extends JPanel {
 	class InputPanel extends JPanel {
 		private ImageIcon bgIcon = new ImageIcon("image/inputBg.jpg");
 		private Image bgImg = bgIcon.getImage();
-		
+
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			g.drawImage(bgImg,0,0,getWidth(),getHeight(),this);
+			g.drawImage(bgImg, 0, 0, getWidth(), getHeight(), this);
 		}
-		
+
 		public InputPanel() {
 			this.setBackground(Color.GRAY);
 			add(inputField);
@@ -118,32 +128,35 @@ public class GamePanel extends JPanel {
 			});
 		}
 	}
-	
-	class PausePanel extends JPanel{
+
+	class PausePanel extends JPanel {
 		JLabel label = null;
+
 		public PausePanel() {
 			this.setLayout(new BorderLayout());
 			this.setOpaque(false);
 			this.setVisible(false);
-			
-			label = new JLabel("GAME PAUSED",JLabel.CENTER);
 
-			label.setFont(new Font("Galmuri9",Font.BOLD, 40));
+			label = new JLabel("GAME PAUSED", JLabel.CENTER);
+
+			label.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			label.setForeground(Color.WHITE);
 			add(label, BorderLayout.CENTER);
 		}
-		
+
 		@Override
 		public void paintComponent(Graphics g) {
-			g.setColor(new Color(0,0,0,100));
+			g.setColor(new Color(0, 0, 0, 100));
 			g.fillRect(0, 0, getWidth(), getHeight());
-			
+
 			super.paintComponent(g);
 		}
+
 		// wait 스레드 시작
 		public void waitThreadStart() {
 			new WaitThread().start();
 		}
+
 		// 2초 후 실행되는 코드
 		public void waitAndStart() {
 			set.resumeGame();
@@ -152,13 +165,15 @@ public class GamePanel extends JPanel {
 			inputField.requestFocus(); // 포커스 필드에 다시 주기
 			label.setText("GAME PAUSED");
 		}
-		
-		class WaitThread extends Thread{
+
+		class WaitThread extends Thread {
 			private int count = 2;
+
 			@Override
 			public void run() {
-				while(true) {
-					if (count == 0) break;
+				while (true) {
+					if (count == 0)
+						break;
 					try {
 						label.setText(Integer.toString(count));
 						sleep(1000);

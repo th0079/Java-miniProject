@@ -5,39 +5,40 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class SetAsteroid {
-	private GamePanel.GroundPanel groundPanel =null;
+	private GamePanel.GroundPanel groundPanel = null;
 	private StatusPanel statusPanel = null;
 	private TextStore tStore;
 	private Vector<Asteroid> asteroids;
 	private ImageIcon blueAsteroidImage = new ImageIcon("image/blueAsteroid.png");
 	private ImageIcon redAsteroidImage = new ImageIcon("image/RedAsteroid.png");
 	private ImageIcon grayAsteroidImage = new ImageIcon("image/GrayAsteroid.png");
-	private Font font = new Font("Galmuri9",Font.BOLD, 20);
+	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private boolean stopFlag = false;
-	
-	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, TextStore tStore, Vector<Asteroid> asteroids) {
+
+	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, TextStore tStore,
+			Vector<Asteroid> asteroids) {
 		this.groundPanel = groundPanel;
 		this.tStore = tStore;
 		this.asteroids = asteroids;
 		this.statusPanel = statusPanel;
 	}
-	
+
 	public void startGame() {
-        new AsteroidSpawner().start();
-        new AsteroidDestroyer().start();
-    }
-	
+		new AsteroidSpawner().start();
+		new AsteroidDestroyer().start();
+	}
+
 	public void stopGame() {
 		stopFlag = true;
 	}
-	
+
 	synchronized public void resumeGame() {
 		stopFlag = false;
 		notifyAll();
 	}
-	
+
 	synchronized public void checkFlag() {
-		if(stopFlag) {
+		if (stopFlag) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -46,7 +47,7 @@ public class SetAsteroid {
 			}
 		}
 	}
-	
+
 	public void spawnAsteroid(int level) {
 		int x = (int) (Math.random() * (groundPanel.getWidth() - 170)) + 40;
 
@@ -58,59 +59,55 @@ public class SetAsteroid {
 		double rand = Math.random();
 
 		switch (level) {
-		case 1:  // 레벨1
+		case 1: // 레벨1
 			if (rand < 0.9) {
 				imageLabel = new JLabel(blueAsteroidImage);
-				imageLabel.setSize(80,80);
+				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			}
-			else {
+			} else {
 				imageLabel = new JLabel(redAsteroidImage);
-				imageLabel.setSize(80,80);
+				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
 			}
 			break;
-			
-		case 2:  // 레벨2
+
+		case 2: // 레벨2
 			if (rand < 0.7) {
 				imageLabel = new JLabel(blueAsteroidImage);
-				imageLabel.setSize(80,80);
+				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			}
-			else {
+			} else {
 				imageLabel = new JLabel(redAsteroidImage);
-				imageLabel.setSize(80,80);
+				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
 			}
 			break;
-			
+
 		case 3: // 레벨3
 			if (rand < 0.6) {
 				imageLabel = new JLabel(blueAsteroidImage);
-				imageLabel.setSize(80,80);
+				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			}
-			else if (rand < 0.9) {
+			} else if (rand < 0.9) {
 				imageLabel = new JLabel(redAsteroidImage);
-				imageLabel.setSize(80,80);
+				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
-			}
-			else {
+			} else {
 				word = tStore.getLongWord();
 				text = new JLabel(word, JLabel.CENTER);
 				text.setFont(font);
 				imageLabel = new JLabel(grayAsteroidImage);
-				imageLabel.setSize(160,160);
+				imageLabel.setSize(160, 160);
 				asteroid = new GrayAsteroid(groundPanel, x, text, imageLabel);
 			}
 			break;
 		}
-		
-		text.setSize(200,30);
-		
+
+		text.setSize(200, 30);
+
 		groundPanel.add(text);
 		groundPanel.add(imageLabel);
-		
+
 		asteroids.add(asteroid);
 		asteroid.start();
 	}
@@ -152,12 +149,12 @@ public class SetAsteroid {
 			Asteroid a = asteroids.get(i);
 			JLabel label = a.getLabel();
 			int limitY = groundPanel.getHeight();
-			
-			if (label.getY() >= limitY-40) {
+
+			if (label.getY() >= limitY - 40) {
 				groundPanel.remove(label);
 				groundPanel.remove(a.getImageLabel());
 				asteroids.remove(i);
-				// 체력 감소 코드 추가 위치
+				
 				statusPanel.damaged(a.damage);
 				System.out.println("지구에게 " + a.damage + "데미지");
 			}

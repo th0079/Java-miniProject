@@ -6,35 +6,37 @@ import java.util.Vector;
 public class TextStore {
 	private Vector<String> shortV = new Vector<String>();
 	private Vector<String> longV = new Vector<String>();
-	
+
 	public TextStore() {
 		loadWord();
 	}
-	
+
 	public String getShortWord() {
-		int index = (int)(Math.random()*shortV.size());
+		int index = (int) (Math.random() * shortV.size());
 		return shortV.get(index);
 	}
-	
+
 	public String getLongWord() {
-		int index = (int)(Math.random()*longV.size());
+		int index = (int) (Math.random() * longV.size());
 		return longV.get(index);
 	}
-	
+
 	private void loadWord() {
 		try {
 			FileReader fr = new FileReader("text/text.txt");
 			BufferedReader br = new BufferedReader(fr);
-			
+
 			String line = "";
-			while(true) {
+			while (true) {
 				line = br.readLine();
-				if (line ==null) break;
-				
-				if(line.trim().length()>0) {
-					if (line.trim().length()<7)
+				if (line == null)
+					break;
+
+				if (line.trim().length() > 0) {
+					if (line.trim().length() < 7)
 						shortV.add(line);
-					else longV.add(line);
+					else
+						longV.add(line);
 				}
 			}
 			br.close();
@@ -42,6 +44,6 @@ public class TextStore {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 }

@@ -11,25 +11,26 @@ import javax.swing.JPanel;
 public class ComboPanel extends JPanel {
 	private int combo = 0;
 	private boolean burning = false;
-	private JLabel comboLabel = new JLabel("0",JLabel.CENTER);
+	private JLabel comboLabel = new JLabel("0", JLabel.CENTER);
 	private ImageIcon bgIcon = new ImageIcon("image/comboBg.png");
 	private Image bgImg = bgIcon.getImage();
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(bgImg,0,0,getWidth(),getHeight(),this);
+		g.drawImage(bgImg, 0, 0, getWidth(), getHeight(), this);
 	}
-	
+
 	public ComboPanel() {
 		this.setLayout(new BorderLayout());
-		comboLabel.setFont(new Font("Galmuri9",Font.BOLD, 50));
+		comboLabel.setFont(new Font("Galmuri9", Font.BOLD, 50));
 		comboLabel.setForeground(Color.ORANGE);
 		add(comboLabel, BorderLayout.CENTER);
 	}
 
 	public void increaseCombo() {
 		combo++;
-		if (combo>=5) burning =true;
+		if (combo >= 5)
+			burning = true;
 		updateCombo();
 	}
 
@@ -47,13 +48,15 @@ public class ComboPanel extends JPanel {
 		comboLabel.setText(Integer.toString(combo));
 
 		if (isBurning()) {
+			comboLabel.setForeground(new Color(255,87,0));
 		}
+		else comboLabel.setForeground(Color.ORANGE);
 	}
-	
-	class ComboThread extends Thread{
+
+	class ComboThread extends Thread {
 		@Override
 		public void run() {
-			
+
 		}
 	}
 }

@@ -12,6 +12,7 @@ public class Asteroid extends Thread {
 	private GamePanel.GroundPanel panel;
 	private JLabel text;
 	private SetAsteroid set = null;
+
 	public Asteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		this.panel = panel;
 		this.x = x;
@@ -19,50 +20,55 @@ public class Asteroid extends Thread {
 		this.text.setForeground(Color.white);
 		set = panel.getSetAsteroid();
 	}
+
 	public String getText() {
 		return text.getText();
 	}
+
 	public JLabel getLabel() {
 		return text;
 	}
+
 	public JLabel getImageLabel() {
 		return imageLabel;
 	}
+
 	public int getScore() {
 		return score;
 	}
+
 	public void fall() {
-		y+=speed;
-		
-		imageLabel.setLocation((int)x, (int)y);
-		int textX = (int)x + (imageLabel.getWidth() - text.getWidth()) / 2;
-		int textY = (int)y + (imageLabel.getHeight() - text.getHeight()) / 2;
+		y += speed;
+
+		imageLabel.setLocation((int) x, (int) y);
+		int textX = (int) x + (imageLabel.getWidth() - text.getWidth()) / 2;
+		int textY = (int) y + (imageLabel.getHeight() - text.getHeight()) / 2;
 		text.setLocation(textX, textY);
 	}
-	
+
 	@Override
 	public void run() {
 		try {
-			while(true) {
+			while (true) {
 				set.checkFlag();
 				fall();
 				panel.repaint();
-				
-				if (y>panel.getHeight()) {
+
+				if (y > panel.getHeight()) {
 					break;
 				}
-				
+
 				Thread.sleep(100);
 			}
-		}
-		catch(InterruptedException e) {
+		} catch (InterruptedException e) {
 			return;
 		}
 	}
-	
+
 }
+
 // 푸른 소행성 
-class BlueAsteroid extends Asteroid{
+class BlueAsteroid extends Asteroid {
 	public BlueAsteroid(GamePanel.GroundPanel panel, double x, JLabel text, JLabel imageLabel) {
 		super(panel, x, text);
 		this.score = 10;
@@ -73,7 +79,7 @@ class BlueAsteroid extends Asteroid{
 }
 
 // 붉은 소행성
-class RedAsteroid extends Asteroid{
+class RedAsteroid extends Asteroid {
 	public RedAsteroid(GamePanel.GroundPanel panel, double x, JLabel text, JLabel imageLabel) {
 		super(panel, x, text);
 		this.score = 30;
@@ -84,7 +90,7 @@ class RedAsteroid extends Asteroid{
 }
 
 // 회색 소행성
-class GrayAsteroid extends Asteroid{
+class GrayAsteroid extends Asteroid {
 	public GrayAsteroid(GamePanel.GroundPanel panel, double x, JLabel text, JLabel imageLabel) {
 		super(panel, x, text);
 		this.score = 50;
@@ -93,5 +99,3 @@ class GrayAsteroid extends Asteroid{
 		this.imageLabel = imageLabel;
 	}
 }
-
-
