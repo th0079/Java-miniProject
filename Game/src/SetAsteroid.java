@@ -5,20 +5,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class SetAsteroid {
-	private GamePanel.GroundPanel groundPanel;
+	private GamePanel.GroundPanel groundPanel =null;
+	private StatusPanel statusPanel = null;
 	private TextStore tStore;
 	private Vector<Asteroid> asteroids;
-	private Earth earth = new Earth();
 	private ImageIcon blueAsteroidImage = new ImageIcon("image/blueAsteroid.png");
 	private ImageIcon redAsteroidImage = new ImageIcon("image/RedAsteroid.png");
 	private ImageIcon grayAsteroidImage = new ImageIcon("image/GrayAsteroid.png");
-	private Font font = new Font("Consolas",Font.BOLD, 20);
+	private Font font = new Font("NanumBarunGothic",Font.BOLD, 20);
 	private boolean stopFlag = false;
 	
-	public SetAsteroid(GamePanel.GroundPanel groundPanel, TextStore tStore, Vector<Asteroid> asteroids) {
+	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, TextStore tStore, Vector<Asteroid> asteroids) {
 		this.groundPanel = groundPanel;
 		this.tStore = tStore;
 		this.asteroids = asteroids;
+		this.statusPanel = statusPanel;
 	}
 	
 	public void startGame() {
@@ -157,7 +158,7 @@ public class SetAsteroid {
 				groundPanel.remove(a.getImageLabel());
 				asteroids.remove(i);
 				// 체력 감소 코드 추가 위치
-				earth.damaged(a.damage);
+				statusPanel.damaged(a.damage);
 				System.out.println("지구에게 " + a.damage + "데미지");
 			}
 		}

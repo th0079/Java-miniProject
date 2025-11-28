@@ -2,7 +2,8 @@
 public class GameMain {
 
 	public static void main(String[] args) {
-		new GameFrame();
+		LoginPanel loginPanel = new LoginPanel();
+		new GameFrame(loginPanel.getId());
 	}
 
 }

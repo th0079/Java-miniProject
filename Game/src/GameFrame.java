@@ -1,9 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -14,41 +16,45 @@ import javax.swing.JToolBar;
 
 public class GameFrame extends JFrame{
 	private TextStore tStore = new TextStore();
-	private JMenuItem startItem = new JMenuItem("Start");
-	private JButton startBtn = new JButton("Start");
-	private JButton stopBtn = new JButton("Stop");
+	private JButton startBtn = new JButton("시작");
+	private JButton stopBtn = new JButton("일시정지");
 	private ScorePanel scorePanel = new ScorePanel();
 	private ComboPanel comboPanel = new ComboPanel();
-	private EditPanel editPanel = new EditPanel();
-	private GamePanel gamePanel = new GamePanel(scorePanel, comboPanel, tStore);
+	private StatusPanel statusPanel = new StatusPanel();
+	private RankPanel rankPanel = new RankPanel();
+	private GamePanel gamePanel = new GamePanel(scorePanel, comboPanel, statusPanel, tStore);
 	private boolean stop = false;
 	private boolean start = false;
 	
-	public GameFrame() {
+	public GameFrame(String id) {
 		super("지구를 지켜라!");
+		
 		setSize(1000,800);
+		System.out.println(Window.WIDTH/2 + " " + Window.HEIGHT/2);
+		//setLocation()
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		makeMenu();
 		makeToolBar();
 		makeSplitPane();
 		setVisible(true);
+		
 	}
 	
 	private void makeMenu() {
 		JMenuBar mBar = new JMenuBar();
 		this.setJMenuBar(mBar);
 		
-		JMenu fileMenu = new JMenu("File");
-		mBar.add(fileMenu);
+		JMenu Menu = new JMenu("설정");
+		mBar.add(Menu);
 		
-		JMenu editMenu = new JMenu("Edit");
-		mBar.add(editMenu);
+//		JMenu editMenu = new JMenu("Edit");
+//		mBar.add(editMenu);
 		
 		JMenuItem openItem = new JMenuItem("Open");
-		fileMenu.add(openItem);
-		fileMenu.add("Save");
-		fileMenu.addSeparator();
-		fileMenu.add(startItem);
+		Menu.add(openItem);
+		Menu.add("Save");
+		Menu.addSeparator();
 	}
 	
 	private void makeToolBar() {
@@ -93,7 +99,7 @@ public class GameFrame extends JFrame{
 		
 		JSplitPane vPane = new JSplitPane();
 		vPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		vPane.setDividerLocation(200);
+		vPane.setDividerLocation(300);
 		vPane.setEnabled(false);
 		
 		JPanel rightTopPanel = new JPanel();
@@ -101,8 +107,13 @@ public class GameFrame extends JFrame{
         rightTopPanel.add(scorePanel);
         rightTopPanel.add(comboPanel);
 		
+        JPanel rightBottomPanel = new JPanel();
+        rightBottomPanel.setLayout(new GridLayout(2,1));
+        rightBottomPanel.add(rankPanel);
+        rightBottomPanel.add(statusPanel);
+        
         vPane.setTopComponent(rightTopPanel);
-        vPane.setBottomComponent(editPanel);
+        vPane.setBottomComponent(rightBottomPanel);
         
 		hPane.setRightComponent(vPane);
 		hPane.setLeftComponent(gamePanel);
