@@ -22,9 +22,9 @@ public class LoginPanel extends JPanel {
 		private JDialog login = null;
 		
 		public LoginPanel() {
-			makeLoginDialog();
 			setLayout(null);
-			setSize(1000,1000);
+			setSize(400,300);
+			
 			label.setFont(new Font("NanumBarunGothic", Font.BOLD, 20));
 			label.setBounds(100,50,200,50);
 			label.setForeground(Color.WHITE);
@@ -41,9 +41,12 @@ public class LoginPanel extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					login.setVisible(false);
+					login.setModal(false);
 					inputCheck = true;
 				}
 			});
+			
+			makeLoginDialog();
 		}
 		public boolean isInput() {
 			return inputCheck;
@@ -65,10 +68,11 @@ public class LoginPanel extends JPanel {
 			
 			login.setTitle("로그인창");
 			login.setSize(400,300);
+			
 			login.setLocation(500,500);
 			login.setContentPane(this);
+			login.setModal(true);
 			login.setVisible(true);
-			
 		}
 		
 		class LoginThread extends Thread {

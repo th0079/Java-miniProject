@@ -30,8 +30,7 @@ public class GameFrame extends JFrame{
 		super("지구를 지켜라!");
 		
 		setSize(1000,800);
-		System.out.println(Window.WIDTH/2 + " " + Window.HEIGHT/2);
-		//setLocation()
+		setLocation(1000,1000);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		makeMenu();
