@@ -22,7 +22,7 @@ public class ComboPanel extends JPanel {
 	
 	public ComboPanel() {
 		this.setLayout(new BorderLayout());
-		comboLabel.setFont(new Font("NanumBarunGothic",Font.BOLD, 50));
+		comboLabel.setFont(new Font("Galmuri9",Font.BOLD, 50));
 		comboLabel.setForeground(Color.ORANGE);
 		add(comboLabel, BorderLayout.CENTER);
 	}

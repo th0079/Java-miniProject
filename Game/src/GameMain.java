@@ -7,6 +7,7 @@ public class GameMain {
 		if (loginPanel.isInput()) {
 			new GameFrame(loginPanel.getId());
 		}
+		System.out.println(loginPanel.getId());
 	}
 
 }

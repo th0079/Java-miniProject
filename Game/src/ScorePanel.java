@@ -24,7 +24,7 @@ public class ScorePanel extends JPanel{
 	public ScorePanel() {
 		this.setLayout(new BorderLayout());
 	
-		scoreLabel.setFont(new Font("NanumBarunGothic",Font.BOLD, 50));
+		scoreLabel.setFont(new Font("Galmuri9",Font.BOLD, 50));
 		scoreLabel.setForeground(Color.ORANGE);
 		add(scoreLabel, BorderLayout.CENTER);
 		

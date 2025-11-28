@@ -23,7 +23,7 @@ public class StatusPanel extends JPanel{
 	public StatusPanel() {
 		this.setLayout(new BorderLayout());
 		
-		hpLabel.setFont(new Font("NanumBarunGothic",Font.BOLD, 50));
+		hpLabel.setFont(new Font("Galmuri9",Font.BOLD, 50));
 		hpLabel.setForeground(new Color(255,30,30));
 		add(hpLabel, BorderLayout.CENTER);
 		

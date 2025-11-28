@@ -20,16 +20,19 @@ public class LoginPanel extends JPanel {
 		private Image bgImg = bgIcon.getImage();
 		private boolean inputCheck = false;
 		private JDialog login = null;
+		private Font font = new Font("Galmuri9",Font.BOLD,20);
 		
 		public LoginPanel() {
 			setLayout(null);
 			setSize(400,300);
 			
-			label.setFont(new Font("NanumBarunGothic", Font.BOLD, 20));
-			label.setBounds(100,50,200,50);
+			label.setFont(font);
+			label.setBounds(100,50,300,50);
 			label.setForeground(Color.WHITE);
 			id.setBounds(100,100,200,30);
+			id.setFont(font);
 			loginBtn.setBounds(150,150,100,50);
+			loginBtn.setFont(font);
 			
 			add(label);
 			add(id);
@@ -41,7 +44,6 @@ public class LoginPanel extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					login.setVisible(false);
-					login.setModal(false);
 					inputCheck = true;
 				}
 			});

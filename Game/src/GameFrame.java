@@ -1,11 +1,10 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,16 +20,21 @@ public class GameFrame extends JFrame{
 	private ScorePanel scorePanel = new ScorePanel();
 	private ComboPanel comboPanel = new ComboPanel();
 	private StatusPanel statusPanel = new StatusPanel();
-	private RankPanel rankPanel = new RankPanel();
+	private PlayerPanel playerPanel = null;
 	private GamePanel gamePanel = new GamePanel(scorePanel, comboPanel, statusPanel, tStore);
 	private boolean stop = false;
 	private boolean start = false;
-	
+	private String id = null;
+	private Font font = new Font("Galmuri9",Font.BOLD,20);
 	public GameFrame(String id) {
 		super("지구를 지켜라!");
-		
+		this.id = id;
+		playerPanel = new PlayerPanel(id);
+		startBtn.setFont(font);
+		stopBtn.setFont(font);
 		setSize(1000,800);
-		setLocation(1000,1000);
+		setLocation(500,500);
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		makeMenu();
@@ -45,15 +49,16 @@ public class GameFrame extends JFrame{
 		this.setJMenuBar(mBar);
 		
 		JMenu Menu = new JMenu("설정");
+		Menu.setFont(font);
 		mBar.add(Menu);
 		
 //		JMenu editMenu = new JMenu("Edit");
 //		mBar.add(editMenu);
 		
-		JMenuItem openItem = new JMenuItem("Open");
-		Menu.add(openItem);
-		Menu.add("Save");
-		Menu.addSeparator();
+//		JMenuItem openItem = new JMenuItem("Open");
+//		Menu.add(openItem);
+//		Menu.add("Save");
+//		Menu.addSeparator();
 	}
 	
 	private void makeToolBar() {
@@ -108,8 +113,8 @@ public class GameFrame extends JFrame{
 		
         JPanel rightBottomPanel = new JPanel();
         rightBottomPanel.setLayout(new GridLayout(2,1));
-        rightBottomPanel.add(rankPanel);
         rightBottomPanel.add(statusPanel);
+        rightBottomPanel.add(playerPanel);
         
         vPane.setTopComponent(rightTopPanel);
         vPane.setBottomComponent(rightBottomPanel);

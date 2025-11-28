@@ -22,11 +22,12 @@ public class GamePanel extends JPanel {
 	private ComboPanel comboPanel = null;
 	private Vector<Asteroid> asteroids = new Vector<Asteroid>();
 	private SetAsteroid set = null;
-
+	private Font font = new Font("Galmuri9",Font.BOLD,20);
 	public GamePanel(ScorePanel scorePanel, ComboPanel comboPanel, StatusPanel statusPanel, TextStore tStore) {
 		this.setLayout(new BorderLayout());
 		this.scorePanel = scorePanel;
 		this.comboPanel = comboPanel;
+		inputField.setFont(font);
 		groundPanel = new GroundPanel();
 		add(groundPanel, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
@@ -127,7 +128,7 @@ public class GamePanel extends JPanel {
 			
 			label = new JLabel("GAME PAUSED",JLabel.CENTER);
 
-			label.setFont(new Font("NanumBarunGothic",Font.BOLD, 40));
+			label.setFont(new Font("Galmuri9",Font.BOLD, 40));
 			label.setForeground(Color.WHITE);
 			add(label, BorderLayout.CENTER);
 		}

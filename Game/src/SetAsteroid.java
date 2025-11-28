@@ -12,7 +12,7 @@ public class SetAsteroid {
 	private ImageIcon blueAsteroidImage = new ImageIcon("image/blueAsteroid.png");
 	private ImageIcon redAsteroidImage = new ImageIcon("image/RedAsteroid.png");
 	private ImageIcon grayAsteroidImage = new ImageIcon("image/GrayAsteroid.png");
-	private Font font = new Font("NanumBarunGothic",Font.BOLD, 20);
+	private Font font = new Font("Galmuri9",Font.BOLD, 20);
 	private boolean stopFlag = false;
 	
 	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, TextStore tStore, Vector<Asteroid> asteroids) {
