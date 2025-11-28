@@ -19,6 +19,8 @@ public class LoginPanel extends JPanel {
 		private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 		private Image bgImg = bgIcon.getImage();
 		private boolean inputCheck = false;
+		private JDialog login = null;
+		
 		public LoginPanel() {
 			makeLoginDialog();
 			setLayout(null);
@@ -38,6 +40,7 @@ public class LoginPanel extends JPanel {
 			loginBtn.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
+					login.setVisible(false);
 					inputCheck = true;
 				}
 			});
@@ -58,7 +61,7 @@ public class LoginPanel extends JPanel {
 		}
 		
 		private void makeLoginDialog() {
-			JDialog login = new JDialog();
+			login = new JDialog();
 			
 			login.setTitle("로그인창");
 			login.setSize(400,300);
