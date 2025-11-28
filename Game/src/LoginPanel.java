@@ -71,7 +71,7 @@ public class LoginPanel extends JPanel {
 			login.setTitle("로그인창");
 			login.setSize(400,300);
 			
-			login.setLocation(500,500);
+			login.setLocation(700,300);
 			login.setContentPane(this);
 			login.setModal(true);
 			login.setVisible(true);

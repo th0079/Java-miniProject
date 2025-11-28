@@ -34,7 +34,7 @@ public class GameFrame extends JFrame {
 		startBtn.setFont(font);
 		stopBtn.setFont(font);
 		setSize(1000, 800);
-		setLocation(500, 300);
+		setLocation(500, 100);
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
