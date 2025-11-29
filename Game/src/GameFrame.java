@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -27,6 +28,8 @@ public class GameFrame extends JFrame {
 	private boolean over = false;
 	private String id = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
+	private ImageIcon bgImg = new ImageIcon("image/background.jpg");
+	
 
 	public GameFrame(String id) {
 		super("지구를 지켜라!");

@@ -15,7 +15,9 @@ public class SetAsteroid {
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private boolean stopFlag = false;
 	private boolean reset = false;
-
+	private AsteroidSpawner asteroidSpawner = null; 
+	private AsteroidDestroyer asteroidDestroyer = null;
+	
 	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, TextStore tStore,
 			Vector<Asteroid> asteroids) {
 		this.groundPanel = groundPanel;
@@ -27,16 +29,24 @@ public class SetAsteroid {
 	public boolean checkReset() {
 		return reset;
 	}
+	public boolean getStopFlag() {
+		return stopFlag;
+	}
 
 	public void startGame() {
 		stopFlag = false;
 		reset = false;
-		new AsteroidSpawner().start();
-		new AsteroidDestroyer().start();
+		
+		asteroidSpawner = new AsteroidSpawner();
+		asteroidSpawner.start();
+		asteroidDestroyer = new AsteroidDestroyer();
+		asteroidDestroyer.start();
 	}
 
 	public void stopGame() {
 		stopFlag = true;
+		asteroidSpawner.interrupt();
+		asteroidDestroyer.interrupt();
 	}
 
 	public void resetGame() {
@@ -52,20 +62,13 @@ public class SetAsteroid {
 		reset = true;
 	}
 
-	synchronized public void resumeGame() {
+	public void resumeGame() {
 		stopFlag = false;
-		notifyAll();
-	}
-
-	synchronized public void checkFlag() {
-		if (stopFlag && !reset) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		
+		asteroidSpawner = new AsteroidSpawner();
+		asteroidSpawner.start();
+		asteroidDestroyer = new AsteroidDestroyer();
+		asteroidDestroyer.start();
 	}
 
 	public void spawnAsteroid(int level) {
@@ -138,8 +141,7 @@ public class SetAsteroid {
 			try {
 				while (true) {
 					if (reset)
-						break;
-					checkFlag();
+						return;
 					spawnAsteroid(3);
 					Thread.sleep(2000); // 2초마다 소환
 				}
@@ -155,13 +157,12 @@ public class SetAsteroid {
 			try {
 				while (true) {
 					if (reset)
-						break;
-					checkFlag();
+						return;
 					checkY();
 					groundPanel.repaint();
 					Thread.sleep(100);
 				}
-			} catch (Exception e) {
+			} catch (InterruptedException e) {
 				return;
 			}
 		}

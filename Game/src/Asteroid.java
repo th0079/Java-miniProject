@@ -51,7 +51,10 @@ public class Asteroid extends Thread {
 		try {
 			while (true) {
 				if (set.checkReset()) break;
-				set.checkFlag();
+				if (set.getStopFlag()) {
+					Thread.sleep(100);
+	                continue;
+	            }
 				fall();
 				panel.repaint();
 

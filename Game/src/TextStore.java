@@ -29,14 +29,15 @@ public class TextStore {
 			String line = "";
 			while (true) {
 				line = br.readLine();
+				
 				if (line == null)
 					break;
 
 				if (line.trim().length() > 0) {
 					if (line.trim().length() < 7)
-						shortV.add(line);
+						shortV.add(line.trim());
 					else
-						longV.add(line);
+						longV.add(line.trim());
 				}
 			}
 			br.close();

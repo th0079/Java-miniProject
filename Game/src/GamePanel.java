@@ -82,6 +82,7 @@ public class GamePanel extends JPanel {
 		statusPanel.resetHp(); // hp 초기화
 		scorePanel.resetScore(); // score 초기화
 		comboPanel.resetCombo(); // combo 초기화
+		inputField.setText("");
 		inputField.setEnabled(true);
 		set.resetGame();
 	}
@@ -140,6 +141,7 @@ public class GamePanel extends JPanel {
 								score *= 2;
 							}
 							scorePanel.increse(score);
+							gameOverPanel.scoreLabel.setText(Integer.toString(scorePanel.getScore()));
 
 							groundPanel.remove(a.getLabel());
 							groundPanel.remove(a.getImageLabel());
@@ -247,9 +249,7 @@ public class GamePanel extends JPanel {
 			label.setSize(300,200);
 			label.setLocation(200,100);
 			
-			int score = scorePanel.getScore();
-			System.out.println("점수" +score);
-			scoreLabel = new JLabel(Integer.toString(score),JLabel.CENTER);
+			scoreLabel = new JLabel("점수",JLabel.CENTER);
 			scoreLabel.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			scoreLabel.setForeground(Color.ORANGE);
 			scoreLabel.setSize(300,200);
