@@ -187,6 +187,9 @@ public class GamePanel extends JPanel {
 
 		// 2초 후 실행되는 코드
 		public void waitAndStart() {
+			gameFrame.getStopBtn().setVisible(true);
+			gameFrame.getStartBtn().setVisible(false);
+			gameFrame.getStartBtn().setText("시작");
 			set.resumeGame();
 			pausePanel.setVisible(false);
 			inputField.setEnabled(true); // 필드 활성화
