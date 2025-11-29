@@ -69,18 +69,18 @@ public class ExplainPanel extends JPanel{
 		add(ex9);
 		setVisible(true);
 		
-		JLabel ex10 = new JLabel(" 시작버튼을 눌러 시작 및 재개를 할 수 있고");
-		ex10.setFont(font);
-		ex10.setForeground(Color.WHITE);
-		ex10.setSize(400,50);
-		add(ex10);
-		setVisible(true);
-		JLabel ex11 = new JLabel(" 일시정지 버튼으로 정지할 수 있음");
-		ex11.setFont(font);
-		ex11.setForeground(Color.WHITE);
-		ex11.setSize(400,50);
-		add(ex11);
-		setVisible(true);
+//		JLabel ex10 = new JLabel(" 시작버튼을 눌러 시작 및 재개를 할 수 있고");
+//		ex10.setFont(font);
+//		ex10.setForeground(Color.WHITE);
+//		ex10.setSize(400,50);
+//		add(ex10);
+//		setVisible(true);
+//		JLabel ex11 = new JLabel(" 일시정지 버튼으로 정지할 수 있음");
+//		ex11.setFont(font);
+//		ex11.setForeground(Color.WHITE);
+//		ex11.setSize(400,50);
+//		add(ex11);
+//		setVisible(true);
 	}
 	
 	@Override

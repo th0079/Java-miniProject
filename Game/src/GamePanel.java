@@ -76,6 +76,9 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void resetGame() {
+		gameFrame.getStartBtn().setVisible(true);
+		gameFrame.getStopBtn().setVisible(false);
+		gameFrame.getStartBtn().setText("시작");
 		statusPanel.resetHp(); // hp 초기화
 		scorePanel.resetScore(); // score 초기화
 		comboPanel.resetCombo(); // combo 초기화
@@ -182,6 +185,8 @@ public class GamePanel extends JPanel {
 
 		// wait 스레드 시작
 		public void waitThreadStart() {
+			gameFrame.getStartBtn().setEnabled(false);
+	        gameFrame.getStopBtn().setEnabled(false);
 			new WaitThread().start();
 		}
 
@@ -190,10 +195,15 @@ public class GamePanel extends JPanel {
 			gameFrame.getStopBtn().setVisible(true);
 			gameFrame.getStartBtn().setVisible(false);
 			gameFrame.getStartBtn().setText("시작");
+			
 			set.resumeGame();
 			pausePanel.setVisible(false);
+			
 			inputField.setEnabled(true); // 필드 활성화
 			inputField.requestFocus(); // 포커스 필드에 다시 주기
+			
+			gameFrame.getStartBtn().setEnabled(true);
+	        gameFrame.getStopBtn().setEnabled(true);
 			label.setText("GAME PAUSED");
 		}
 
@@ -221,7 +231,7 @@ public class GamePanel extends JPanel {
 
 	class GameOverPanel extends JPanel {
 		private JLabel label = null;
-		private JLabel score = null;
+		private JLabel scoreLabel = null;
 		private JButton homeBtn = null;
 
 		public GameOverPanel() {
@@ -237,11 +247,13 @@ public class GamePanel extends JPanel {
 			label.setSize(300,200);
 			label.setLocation(200,100);
 			
-			score = new JLabel(Integer.toString(scorePanel.getScore()),JLabel.CENTER);
-			score.setFont(new Font("Galmuri9", Font.BOLD, 40));
-			score.setForeground(Color.ORANGE);
-			score.setSize(300,200);
-			score.setLocation(200,200);
+			int score = scorePanel.getScore();
+			System.out.println("점수" +score);
+			scoreLabel = new JLabel(Integer.toString(score),JLabel.CENTER);
+			scoreLabel.setFont(new Font("Galmuri9", Font.BOLD, 40));
+			scoreLabel.setForeground(Color.ORANGE);
+			scoreLabel.setSize(300,200);
+			scoreLabel.setLocation(200,200);
 			
 			homeBtn = new JButton("나가기");
 			homeBtn.setFont(new Font("Galmuri9", Font.BOLD, 40));
@@ -251,7 +263,7 @@ public class GamePanel extends JPanel {
 			homeBtn.setLocation(250,400);
 			
 			add(label);
-			add(score);
+			add(scoreLabel);
 			add(homeBtn);
 			
 			homeBtn.addActionListener(new ActionListener() {

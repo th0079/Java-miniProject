@@ -103,13 +103,15 @@ public class GameFrame extends JFrame {
 	public void resetOverFlag() {
 		over = false;
 	}
+
 	public JButton getStartBtn() {
 		return startBtn;
 	}
+
 	public JButton getStopBtn() {
 		return stopBtn;
 	}
-	
+
 	private void makeToolBar() {
 		JToolBar tBar = new JToolBar();
 		tBar.setFloatable(false);
@@ -129,6 +131,9 @@ public class GameFrame extends JFrame {
 						gamePanel.startGame();
 					} else if (stop) {
 						stop = false;
+						startBtn.setVisible(false);
+						stopBtn.setVisible(true);
+						startBtn.setText("시작");
 						gamePanel.resumeGame();
 					}
 				}
@@ -137,14 +142,12 @@ public class GameFrame extends JFrame {
 		stopBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!over) {
-					if (!stop && start) {
-						stop = true;
-						startBtn.setVisible(true);
-						stopBtn.setVisible(false);
-						startBtn.setText("재개");
-						gamePanel.stopGame();
-					}
+				if (!over && start && !stop) {
+					stop = true;
+					startBtn.setVisible(true);
+					stopBtn.setVisible(false);
+					startBtn.setText("재개");
+					gamePanel.stopGame();
 				}
 			}
 		});
