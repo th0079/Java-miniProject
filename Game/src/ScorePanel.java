@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ScorePanel extends JPanel{
-	private int score =0;
+	private int score=0;
 	private JLabel scoreLabel = new JLabel(Integer.toString(score),JLabel.CENTER);
 	private ImageIcon bgIcon = new ImageIcon("image/scoreBg.png");
 	private Image bgImg = bgIcon.getImage();
@@ -23,7 +23,7 @@ public class ScorePanel extends JPanel{
 	
 	public ScorePanel() {
 		this.setLayout(new BorderLayout());
-	
+		score = 0;
 		scoreLabel.setFont(new Font("Galmuri9",Font.BOLD, 50));
 		scoreLabel.setForeground(Color.ORANGE);
 		add(scoreLabel, BorderLayout.CENTER);
@@ -37,5 +37,9 @@ public class ScorePanel extends JPanel{
 	
 	public int getScore() {
 		return score;
+	}
+	public void resetScore() {
+		score = 0;
+		scoreLabel.setText(Integer.toString(score));
 	}
 }

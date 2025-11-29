@@ -1,42 +1,58 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class GamePanel extends JPanel {
+	private GameFrame gameFrame;
 	private GroundPanel groundPanel;
 	private JTextField inputField = new JTextField(20);
 	private InputPanel inputPanel = new InputPanel();
 	private PausePanel pausePanel = new PausePanel();
+	private GameOverPanel gameOverPanel = null;
 	private ScorePanel scorePanel = null;
 	private ComboPanel comboPanel = null;
 	private ExplainPanel exPanel = null;
+	private StatusPanel statusPanel = null;
 	private Vector<Asteroid> asteroids = new Vector<Asteroid>();
 	private SetAsteroid set = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 
-	public GamePanel(ScorePanel scorePanel, ComboPanel comboPanel, StatusPanel statusPanel, TextStore tStore) {
+	public GamePanel(GameFrame gameFrame, ScorePanel scorePanel, 
+			ComboPanel comboPanel, StatusPanel statusPanel, TextStore tStore) 
+	{
+		this.gameFrame = gameFrame;
 		this.setLayout(new BorderLayout());
 		this.scorePanel = scorePanel;
 		this.comboPanel = comboPanel;
+		this.statusPanel = statusPanel;
+		
 		inputField.setFont(font);
+		
 		exPanel = new ExplainPanel();
+		gameOverPanel = new GameOverPanel();
 		groundPanel = new GroundPanel();
+		
 		add(groundPanel, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
 		groundPanel.add(pausePanel, BorderLayout.CENTER);
+		
+		gameOverPanel.setBounds(0, 0, 700, 800);
 		pausePanel.setBounds(0, 0, 700, 800);
-
+		
 		set = new SetAsteroid(groundPanel, statusPanel, tStore, asteroids);
 	}
 
@@ -44,6 +60,7 @@ public class GamePanel extends JPanel {
 	public void startGame() {
 		exPanel.setVisible(false);
 		set.startGame();
+		gameOverPanel.threadStart();
 		inputField.requestFocus();
 	}
 
@@ -57,7 +74,15 @@ public class GamePanel extends JPanel {
 	public void resumeGame() {
 		pausePanel.waitThreadStart(); // 스레드 시작 메소드 호출
 	}
-
+	
+	public void resetGame() {
+		statusPanel.resetHp(); // hp 초기화
+		scorePanel.resetScore(); // score 초기화
+		comboPanel.resetCombo(); // combo 초기화
+		inputField.setEnabled(true);
+		set.resetGame();
+	}
+	
 	class GroundPanel extends JPanel {
 		private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 		private Image bgImg = bgIcon.getImage();
@@ -65,6 +90,7 @@ public class GamePanel extends JPanel {
 		public GroundPanel() {
 			this.setLayout(null);
 			add(exPanel);
+			add(gameOverPanel);
 		}
 
 		public void paintComponent(Graphics g) {
@@ -133,15 +159,17 @@ public class GamePanel extends JPanel {
 		JLabel label = null;
 
 		public PausePanel() {
-			this.setLayout(new BorderLayout());
+			this.setLayout(null);
 			this.setOpaque(false);
 			this.setVisible(false);
-
+			setSize(700,800);
+			
 			label = new JLabel("GAME PAUSED", JLabel.CENTER);
-
 			label.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			label.setForeground(Color.WHITE);
-			add(label, BorderLayout.CENTER);
+			label.setSize(300,200);
+			label.setLocation(200,200);
+			add(label);
 		}
 
 		@Override
@@ -184,6 +212,90 @@ public class GamePanel extends JPanel {
 					}
 				}
 				waitAndStart();
+			}
+		}
+	}
+
+	class GameOverPanel extends JPanel {
+		private JLabel label = null;
+		private JLabel score = null;
+		private JButton homeBtn = null;
+
+		public GameOverPanel() {
+			this.setLayout(null);
+			this.setOpaque(false);
+			this.setVisible(false);
+			setSize(700,800);
+			setLocation(0,0);
+			
+			label = new JLabel("GAME OVER", JLabel.CENTER);
+			label.setFont(new Font("Galmuri9", Font.BOLD, 40));
+			label.setForeground(Color.WHITE);
+			label.setSize(300,200);
+			label.setLocation(200,100);
+			
+			score = new JLabel(Integer.toString(scorePanel.getScore()),JLabel.CENTER);
+			score.setFont(new Font("Galmuri9", Font.BOLD, 40));
+			score.setForeground(Color.ORANGE);
+			score.setSize(300,200);
+			score.setLocation(200,200);
+			
+			homeBtn = new JButton("나가기");
+			homeBtn.setFont(new Font("Galmuri9", Font.BOLD, 40));
+			homeBtn.setForeground(Color.WHITE);
+			homeBtn.setBackground(Color.DARK_GRAY);
+			homeBtn.setSize(200,100);
+			homeBtn.setLocation(250,400);
+			
+			add(label);
+			add(score);
+			add(homeBtn);
+			
+			homeBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setVisible(false);
+					exPanel.setVisible(true);
+					gameFrame.resetStartFlag();
+					gameFrame.resetOverFlag();
+					resetGame();
+				}
+			});
+		}
+		public void threadStart() {
+			GameOverThread th = new GameOverThread();
+			th.start();
+		}
+		public void gameOver() {
+			set.stopGame();
+			gameFrame.setOverFlag();
+			setVisible(true);
+			inputField.setEnabled(false);
+		}
+
+		@Override
+		public void paintComponent(Graphics g) {
+			g.setColor(new Color(0, 0, 0, 100));
+			g.fillRect(0, 0, getWidth(), getHeight());
+
+			super.paintComponent(g);
+		}
+		
+		class GameOverThread extends Thread{
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						sleep(100); // 추가하니까 해결
+						if (statusPanel.isGameOver()) {
+							gameOver();
+							break;
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}

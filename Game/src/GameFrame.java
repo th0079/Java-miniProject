@@ -21,14 +21,16 @@ public class GameFrame extends JFrame {
 	private ComboPanel comboPanel = new ComboPanel();
 	private StatusPanel statusPanel = new StatusPanel();
 	private PlayerPanel playerPanel = null;
-	private GamePanel gamePanel = new GamePanel(scorePanel, comboPanel, statusPanel, tStore);
+	private GamePanel gamePanel = null;
 	private boolean stop = false;
 	private boolean start = false;
+	private boolean over = false;
 	private String id = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 
 	public GameFrame(String id) {
 		super("지구를 지켜라!");
+		gamePanel = new GamePanel(this, scorePanel, comboPanel, statusPanel, tStore);
 		this.id = id;
 		playerPanel = new PlayerPanel(id);
 		startBtn.setFont(font);
@@ -60,11 +62,11 @@ public class GameFrame extends JFrame {
 		JMenuItem soundItem = new JMenuItem("소리설정");
 		soundItem.setFont(font);
 		Menu.add(soundItem);
-		
+
 		JMenuItem wordItem = new JMenuItem("단어추가");
 		wordItem.setFont(font);
 		Menu.add(wordItem);
-		
+
 		rankBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -72,7 +74,7 @@ public class GameFrame extends JFrame {
 				System.out.println("랭킹 open");
 			}
 		});
-		
+
 		soundItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -80,7 +82,7 @@ public class GameFrame extends JFrame {
 				System.out.println("소리설정 open");
 			}
 		});
-		
+
 		wordItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -88,6 +90,18 @@ public class GameFrame extends JFrame {
 				System.out.println("단어추가 open");
 			}
 		});
+	}
+
+	public void resetStartFlag() {
+		start = false;
+	}
+
+	public void setOverFlag() {
+		over = true;
+	}
+
+	public void resetOverFlag() {
+		over = false;
 	}
 
 	private void makeToolBar() {
@@ -100,25 +114,26 @@ public class GameFrame extends JFrame {
 		startBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!start) {
-					start = true;
-					gamePanel.startGame();
-				} else if (stop) {
-					stop = false;
-					gamePanel.resumeGame();
+				if (!over) {
+					if (!start) {
+						start = true;
+						gamePanel.startGame();
+					} else if (stop) {
+						stop = false;
+						gamePanel.resumeGame();
+					}
 				}
 			}
 		});
 		stopBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (stop)
-					return;
-				else {
-					stop = true;
-					gamePanel.stopGame();
+				if (!over) {
+					if (!stop && start) {
+						stop = true;
+						gamePanel.stopGame();
+					}
 				}
-
 			}
 		});
 	}

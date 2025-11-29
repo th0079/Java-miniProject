@@ -50,6 +50,7 @@ public class Asteroid extends Thread {
 	public void run() {
 		try {
 			while (true) {
+				if (set.checkReset()) break;
 				set.checkFlag();
 				fall();
 				panel.repaint();

@@ -14,6 +14,7 @@ public class SetAsteroid {
 	private ImageIcon grayAsteroidImage = new ImageIcon("image/GrayAsteroid.png");
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private boolean stopFlag = false;
+	private boolean reset = false;
 
 	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, TextStore tStore,
 			Vector<Asteroid> asteroids) {
@@ -23,7 +24,13 @@ public class SetAsteroid {
 		this.statusPanel = statusPanel;
 	}
 
+	public boolean checkReset() {
+		return reset;
+	}
+
 	public void startGame() {
+		stopFlag = false;
+		reset = false;
 		new AsteroidSpawner().start();
 		new AsteroidDestroyer().start();
 	}
@@ -32,13 +39,26 @@ public class SetAsteroid {
 		stopFlag = true;
 	}
 
+	public void resetGame() {
+		System.out.println(asteroids.size());
+		for (int i=0; i<asteroids.size(); i++) {
+			Asteroid a = asteroids.get(i);
+			groundPanel.remove(a.getLabel());
+			groundPanel.remove(a.getImageLabel());
+			groundPanel.repaint();
+		}
+		asteroids.clear();
+		System.out.println(asteroids.size());
+		reset = true;
+	}
+
 	synchronized public void resumeGame() {
 		stopFlag = false;
 		notifyAll();
 	}
 
 	synchronized public void checkFlag() {
-		if (stopFlag) {
+		if (stopFlag && !reset) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -117,6 +137,8 @@ public class SetAsteroid {
 		public void run() {
 			try {
 				while (true) {
+					if (reset)
+						break;
 					checkFlag();
 					spawnAsteroid(3);
 					Thread.sleep(2000); // 2초마다 소환
@@ -132,6 +154,8 @@ public class SetAsteroid {
 		public void run() {
 			try {
 				while (true) {
+					if (reset)
+						break;
 					checkFlag();
 					checkY();
 					groundPanel.repaint();
@@ -154,7 +178,7 @@ public class SetAsteroid {
 				groundPanel.remove(label);
 				groundPanel.remove(a.getImageLabel());
 				asteroids.remove(i);
-				
+
 				statusPanel.damaged(a.damage);
 				System.out.println("지구에게 " + a.damage + "데미지");
 			}
