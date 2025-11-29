@@ -249,7 +249,7 @@ public class GamePanel extends JPanel {
 			label.setSize(300,200);
 			label.setLocation(200,100);
 			
-			scoreLabel = new JLabel("점수",JLabel.CENTER);
+			scoreLabel = new JLabel("0",JLabel.CENTER);
 			scoreLabel.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			scoreLabel.setForeground(Color.ORANGE);
 			scoreLabel.setSize(300,200);

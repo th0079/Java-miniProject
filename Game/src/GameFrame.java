@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,6 +23,7 @@ public class GameFrame extends JFrame {
 	private ScorePanel scorePanel = new ScorePanel();
 	private ComboPanel comboPanel = new ComboPanel();
 	private StatusPanel statusPanel = new StatusPanel();
+	private AddWordPanel addWordPanel = null;
 	private PlayerPanel playerPanel = null;
 	private GamePanel gamePanel = null;
 	private boolean stop = false;
@@ -28,7 +31,8 @@ public class GameFrame extends JFrame {
 	private boolean over = false;
 	private String id = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
-	private ImageIcon bgImg = new ImageIcon("image/background.jpg");
+	private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
+	private Image bgImg = bgIcon.getImage();
 	
 
 	public GameFrame(String id) {
@@ -53,9 +57,10 @@ public class GameFrame extends JFrame {
 	private void makeMenu() {
 		JMenuBar mBar = new JMenuBar();
 		this.setJMenuBar(mBar);
-
+		
 		JMenu Menu = new JMenu("설정");
 		Menu.setFont(font);
+		Menu.setBackground(Color.WHITE);
 		mBar.add(Menu);
 
 		JButton rankBtn = new JButton("랭킹");
@@ -75,6 +80,7 @@ public class GameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// 랭킹 대시보드 추가
 				System.out.println("랭킹 open");
+				stopAction();
 			}
 		});
 
@@ -83,6 +89,7 @@ public class GameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// 소리 설정 추가
 				System.out.println("소리설정 open");
+				stopAction();
 			}
 		});
 
@@ -91,6 +98,8 @@ public class GameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// 단어 설정 추가
 				System.out.println("단어추가 open");
+				stopAction();
+				addWordPanel = new AddWordPanel();
 			}
 		});
 	}
@@ -145,15 +154,18 @@ public class GameFrame extends JFrame {
 		stopBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!over && start && !stop) {
-					stop = true;
-					startBtn.setVisible(true);
-					stopBtn.setVisible(false);
-					startBtn.setText("재개");
-					gamePanel.stopGame();
-				}
+				stopAction();
 			}
 		});
+	}
+	public void stopAction() {
+		if (!over && start && !stop) {
+			stop = true;
+			startBtn.setVisible(true);
+			stopBtn.setVisible(false);
+			startBtn.setText("재개");
+			gamePanel.stopGame();
+		}
 	}
 
 	private void makeSplitPane() {
