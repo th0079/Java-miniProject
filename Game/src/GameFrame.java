@@ -20,12 +20,14 @@ public class GameFrame extends JFrame {
 	private TextStore tStore = new TextStore();
 	private JButton startBtn = new JButton("시작");
 	private JButton stopBtn = new JButton("일시정지");
+	private JButton rankBtn = new JButton("랭킹");
 	private ScorePanel scorePanel = new ScorePanel();
 	private ComboPanel comboPanel = new ComboPanel();
 	private StatusPanel statusPanel = new StatusPanel();
 	private AddWordPanel addWordPanel = null;
 	private PlayerPanel playerPanel = null;
 	private GamePanel gamePanel = null;
+	private RankingPanel rankingPanel = null;
 	private boolean stop = false;
 	private boolean start = false;
 	private boolean over = false;
@@ -34,12 +36,12 @@ public class GameFrame extends JFrame {
 	private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 	private Image bgImg = bgIcon.getImage();
 	
-
 	public GameFrame(String id) {
 		super("지구를 지켜라!");
 		gamePanel = new GamePanel(this, scorePanel, comboPanel, statusPanel, tStore);
 		this.id = id;
 		playerPanel = new PlayerPanel(id);
+		rankingPanel = new RankingPanel(id,scorePanel);
 		startBtn.setFont(font);
 		stopBtn.setFont(font);
 		setSize(1000, 800);
@@ -63,7 +65,6 @@ public class GameFrame extends JFrame {
 		Menu.setBackground(Color.WHITE);
 		mBar.add(Menu);
 
-		JButton rankBtn = new JButton("랭킹");
 		rankBtn.setFont(font);
 		mBar.add(rankBtn);
 
@@ -81,6 +82,8 @@ public class GameFrame extends JFrame {
 				// 랭킹 대시보드 추가
 				System.out.println("랭킹 open");
 				stopAction();
+				rankingPanel = new RankingPanel(id, scorePanel);
+				rankingPanel.makeRankingDialog();
 			}
 		});
 
@@ -110,6 +113,7 @@ public class GameFrame extends JFrame {
 
 	public void setOverFlag() {
 		over = true;
+		rankingPanel.addRanking();
 	}
 
 	public void resetOverFlag() {
@@ -123,7 +127,10 @@ public class GameFrame extends JFrame {
 	public JButton getStopBtn() {
 		return stopBtn;
 	}
-
+	
+	public JButton getRankBtn() {
+		return rankBtn;
+	}
 	private void makeToolBar() {
 		JToolBar tBar = new JToolBar();
 		tBar.setFloatable(false);
@@ -138,6 +145,7 @@ public class GameFrame extends JFrame {
 				if (!over) {
 					if (!start) {
 						start = true;
+						rankBtn.setVisible(false);
 						startBtn.setVisible(false);
 						stopBtn.setVisible(true);
 						gamePanel.startGame();

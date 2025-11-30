@@ -78,6 +78,7 @@ public class GamePanel extends JPanel {
 	public void resetGame() {
 		gameFrame.getStartBtn().setVisible(true);
 		gameFrame.getStopBtn().setVisible(false);
+		gameFrame.getRankBtn().setVisible(true);
 		gameFrame.getStartBtn().setText("시작");
 		statusPanel.resetHp(); // hp 초기화
 		scorePanel.resetScore(); // score 초기화

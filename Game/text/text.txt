@@ -1,4 +1,3 @@
-a
 ability
 able
 about
@@ -366,7 +365,6 @@ hang
 happen
 happy
 hard
-have
 he
 head
 health
