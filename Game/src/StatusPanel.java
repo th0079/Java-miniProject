@@ -47,5 +47,6 @@ public class StatusPanel extends JPanel {
 		hp =100;
 		gameOver =false;
 		hpLabel.setText(Integer.toString(hp));
+		System.out.println("hp reset");
 	}
 }

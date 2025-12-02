@@ -16,12 +16,18 @@ public class ExplainPanel extends JPanel{
 	public ExplainPanel() {
 		setLayout(new GridLayout(15,1));
 		setSize(700,800);
+		JLabel title = new JLabel("지구를 지켜라!");
+		title.setFont(new Font("Galmuri9", Font.BOLD, 40));
+		title.setForeground(Color.WHITE);
+		title.setSize(400,50);
+		add(title);
 		
 		JLabel ex1 = new JLabel(" 푸른 소행성 : 기본 소행성");
 		ex1.setFont(font);
 		ex1.setForeground(Color.BLUE);
 		ex1.setSize(400,50);
 		add(ex1);
+		
 		JLabel ex2 = new JLabel(" >> 점수: 10, 피해량: 10, 속도: 5");
 		ex2.setFont(font);
 		ex2.setForeground(Color.WHITE);

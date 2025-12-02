@@ -23,7 +23,7 @@ public class TextStore {
 
 	private void loadWord() {
 		try {
-			FileReader fr = new FileReader("text/text.txt");
+			FileReader fr = new FileReader("file/text.txt");
 			BufferedReader br = new BufferedReader(fr);
 
 			String line = "";

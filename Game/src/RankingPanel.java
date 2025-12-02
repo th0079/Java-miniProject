@@ -93,7 +93,7 @@ public class RankingPanel extends JPanel {
 
 	public void loadPlayer() {
 		try {
-			FileReader fr = new FileReader("text/players.txt");
+			FileReader fr = new FileReader("file/players.txt");
 			BufferedReader br = new BufferedReader(fr);
 
 			String idLine = "";
@@ -123,7 +123,7 @@ public class RankingPanel extends JPanel {
 
 	public void addRanking() {
 		try {
-			FileWriter fw = new FileWriter("text/players.txt", true);
+			FileWriter fw = new FileWriter("file/players.txt", true);
 			PrintWriter pw = new PrintWriter(fw);
 
 			pw.println(id);
@@ -142,7 +142,7 @@ public class RankingPanel extends JPanel {
 		ranking.setTitle("랭킹");
 		ranking.setSize(500, 700);
 
-		ranking.setLocation(700, 100);
+		ranking.setLocation(700, 150);
 		ranking.setContentPane(this);
 		ranking.setModal(true);
 		ranking.setVisible(true);

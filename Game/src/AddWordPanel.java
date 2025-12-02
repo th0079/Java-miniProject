@@ -84,11 +84,12 @@ public class AddWordPanel extends JPanel {
 		word.add(newWord);
 		writeFile(newWord);
 		wordList.setListData(word);
+		System.out.println(newWord +" 저장 완료");
 	}
 
 	public void writeFile(String word) {
 		try {
-			FileWriter fw = new FileWriter("text/text.txt", true);
+			FileWriter fw = new FileWriter("file/text.txt", true);
 			PrintWriter pw = new PrintWriter(fw);
 
 			pw.println(word);
@@ -106,7 +107,7 @@ public class AddWordPanel extends JPanel {
 		addWord.setTitle("단어추가");
 		addWord.setSize(500, 700);
 
-		addWord.setLocation(700, 100);
+		addWord.setLocation(700, 150);
 		addWord.setContentPane(this);
 		addWord.setModal(true);
 		addWord.setVisible(true);
@@ -114,7 +115,7 @@ public class AddWordPanel extends JPanel {
 	
 	private void loadWord() {
 		try {
-			FileReader fr = new FileReader("text/text.txt");
+			FileReader fr = new FileReader("file/text.txt");
 			BufferedReader br = new BufferedReader(fr);
 
 			String line = "";

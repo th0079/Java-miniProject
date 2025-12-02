@@ -21,6 +21,7 @@ public class GameFrame extends JFrame {
 	private JButton startBtn = new JButton("시작");
 	private JButton stopBtn = new JButton("일시정지");
 	private JButton rankBtn = new JButton("랭킹");
+	private JButton exitBtn = new JButton("나가기");
 	private ScorePanel scorePanel = new ScorePanel();
 	private ComboPanel comboPanel = new ComboPanel();
 	private StatusPanel statusPanel = new StatusPanel();
@@ -44,7 +45,9 @@ public class GameFrame extends JFrame {
 		rankingPanel = new RankingPanel(id,scorePanel);
 		startBtn.setFont(font);
 		stopBtn.setFont(font);
+		exitBtn.setFont(font);
 		setSize(1000, 800);
+		setResizable(false);
 		setLocation(500, 100);
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,6 +116,7 @@ public class GameFrame extends JFrame {
 
 	public void setOverFlag() {
 		over = true;
+		exitBtn.setVisible(false);
 		rankingPanel.addRanking();
 	}
 
@@ -131,38 +135,62 @@ public class GameFrame extends JFrame {
 	public JButton getRankBtn() {
 		return rankBtn;
 	}
+	
+	public JButton getExitBtn() {
+		return exitBtn;
+	}
+	
 	private void makeToolBar() {
 		JToolBar tBar = new JToolBar();
 		tBar.setFloatable(false);
 		tBar.add(startBtn);
 		tBar.add(stopBtn);
+		tBar.add(exitBtn);
 		stopBtn.setVisible(false);
+		exitBtn.setVisible(false);
 		getContentPane().add(tBar, BorderLayout.NORTH);
 
 		startBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("start action");
 				if (!over) {
 					if (!start) {
 						start = true;
 						rankBtn.setVisible(false);
 						startBtn.setVisible(false);
 						stopBtn.setVisible(true);
+						exitBtn.setVisible(true);
 						gamePanel.startGame();
 					} else if (stop) {
 						stop = false;
 						startBtn.setVisible(false);
 						stopBtn.setVisible(true);
+						exitBtn.setVisible(true);
 						startBtn.setText("시작");
 						gamePanel.resumeGame();
 					}
 				}
 			}
 		});
+		
 		stopBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("stop action");
 				stopAction();
+			}
+		});
+		
+		exitBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("exit action");
+				gamePanel.resetGame();
+				exitBtn.setVisible(false);
+				start = false;
+				over = false;
+				stop = false;
 			}
 		});
 	}

@@ -41,5 +41,6 @@ public class ScorePanel extends JPanel{
 	public void resetScore() {
 		score = 0;
 		scoreLabel.setText(Integer.toString(score));
+		System.out.println("score reset");
 	}
 }

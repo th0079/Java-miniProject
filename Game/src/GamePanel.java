@@ -80,6 +80,9 @@ public class GamePanel extends JPanel {
 		gameFrame.getStopBtn().setVisible(false);
 		gameFrame.getRankBtn().setVisible(true);
 		gameFrame.getStartBtn().setText("시작");
+		exPanel.setVisible(true);
+		pausePanel.setVisible(false);
+		gameOverPanel.setVisible(false);
 		statusPanel.resetHp(); // hp 초기화
 		scorePanel.resetScore(); // score 초기화
 		comboPanel.resetCombo(); // combo 초기화
@@ -188,13 +191,16 @@ public class GamePanel extends JPanel {
 
 		// wait 스레드 시작
 		public void waitThreadStart() {
+			System.out.println("대기 시작");
 			gameFrame.getStartBtn().setEnabled(false);
 	        gameFrame.getStopBtn().setEnabled(false);
+	        gameFrame.getExitBtn().setEnabled(false);
 			new WaitThread().start();
 		}
 
 		// 2초 후 실행되는 코드
 		public void waitAndStart() {
+			System.out.println("대기 종료");
 			gameFrame.getStopBtn().setVisible(true);
 			gameFrame.getStartBtn().setVisible(false);
 			gameFrame.getStartBtn().setText("시작");
@@ -207,6 +213,7 @@ public class GamePanel extends JPanel {
 			
 			gameFrame.getStartBtn().setEnabled(true);
 	        gameFrame.getStopBtn().setEnabled(true);
+	        gameFrame.getExitBtn().setEnabled(true);
 			label.setText("GAME PAUSED");
 		}
 
@@ -271,7 +278,6 @@ public class GamePanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					exPanel.setVisible(true);
 					gameFrame.resetStartFlag();
 					gameFrame.resetOverFlag();
 					resetGame();

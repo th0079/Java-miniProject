@@ -38,6 +38,7 @@ public class ComboPanel extends JPanel {
 		combo = 0;
 		burning = false;
 		updateCombo();
+		System.out.println("combo reset");
 	}
 
 	public boolean isBurning() {

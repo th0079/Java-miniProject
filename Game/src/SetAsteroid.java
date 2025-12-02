@@ -50,15 +50,18 @@ public class SetAsteroid {
 	}
 
 	public void resetGame() {
-		System.out.println(asteroids.size());
+		System.out.println("소행성 개수 : " + asteroids.size());
 		for (int i=0; i<asteroids.size(); i++) {
 			Asteroid a = asteroids.get(i);
+			a.interrupt();
 			groundPanel.remove(a.getLabel());
 			groundPanel.remove(a.getImageLabel());
-			groundPanel.repaint();
 		}
+		asteroidSpawner.interrupt();
+		asteroidDestroyer.interrupt();
+		groundPanel.repaint();
 		asteroids.clear();
-		System.out.println(asteroids.size());
+		System.out.println("소행성 초기화 : " + asteroids.size());
 		reset = true;
 	}
 
@@ -127,7 +130,10 @@ public class SetAsteroid {
 		}
 
 		text.setSize(200, 30);
-
+		
+		text.setLocation(x,-100);
+		imageLabel.setLocation(x, -100);
+		
 		groundPanel.add(text);
 		groundPanel.add(imageLabel);
 
@@ -139,6 +145,7 @@ public class SetAsteroid {
 		@Override
 		public void run() {
 			try {
+				Thread.sleep(1000); // 시작 or 재개할 때 딜레이
 				while (true) {
 					if (reset)
 						return;
