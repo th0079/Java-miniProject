@@ -22,6 +22,7 @@ public class GameFrame extends JFrame {
 	private JButton stopBtn = new JButton("일시정지");
 	private JButton rankBtn = new JButton("랭킹");
 	private JButton exitBtn = new JButton("나가기");
+	private JMenu Menu = null;
 	private ScorePanel scorePanel = new ScorePanel();
 	private ComboPanel comboPanel = new ComboPanel();
 	private StatusPanel statusPanel = new StatusPanel();
@@ -63,7 +64,7 @@ public class GameFrame extends JFrame {
 		JMenuBar mBar = new JMenuBar();
 		this.setJMenuBar(mBar);
 		
-		JMenu Menu = new JMenu("설정");
+		Menu = new JMenu("설정");
 		Menu.setFont(font);
 		Menu.setBackground(Color.WHITE);
 		mBar.add(Menu);
@@ -115,6 +116,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void setOverFlag() {
+		if (over) return;
 		over = true;
 		exitBtn.setVisible(false);
 		rankingPanel.addRanking();
@@ -138,6 +140,10 @@ public class GameFrame extends JFrame {
 	
 	public JButton getExitBtn() {
 		return exitBtn;
+	}
+	
+	public JMenu getMenu() {
+		return Menu;
 	}
 	
 	private void makeToolBar() {

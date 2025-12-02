@@ -31,28 +31,27 @@ public class GamePanel extends JPanel {
 	private SetAsteroid set = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 
-	public GamePanel(GameFrame gameFrame, ScorePanel scorePanel, 
-			ComboPanel comboPanel, StatusPanel statusPanel, TextStore tStore) 
-	{
+	public GamePanel(GameFrame gameFrame, ScorePanel scorePanel, ComboPanel comboPanel, StatusPanel statusPanel,
+			TextStore tStore) {
 		this.gameFrame = gameFrame;
 		this.setLayout(new BorderLayout());
 		this.scorePanel = scorePanel;
 		this.comboPanel = comboPanel;
 		this.statusPanel = statusPanel;
-		
+
 		inputField.setFont(font);
-		
+
 		exPanel = new ExplainPanel();
 		gameOverPanel = new GameOverPanel();
 		groundPanel = new GroundPanel();
-		
+
 		add(groundPanel, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
 		groundPanel.add(pausePanel, BorderLayout.CENTER);
-		
+
 		gameOverPanel.setBounds(0, 0, 700, 800);
 		pausePanel.setBounds(0, 0, 700, 800);
-		
+
 		set = new SetAsteroid(groundPanel, statusPanel, tStore, asteroids);
 	}
 
@@ -74,7 +73,7 @@ public class GamePanel extends JPanel {
 	public void resumeGame() {
 		pausePanel.waitThreadStart(); // 스레드 시작 메소드 호출
 	}
-	
+
 	public void resetGame() {
 		gameFrame.getStartBtn().setVisible(true);
 		gameFrame.getStopBtn().setVisible(false);
@@ -90,7 +89,7 @@ public class GamePanel extends JPanel {
 		inputField.setEnabled(true);
 		set.resetGame();
 	}
-	
+
 	class GroundPanel extends JPanel {
 		private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 		private Image bgImg = bgIcon.getImage();
@@ -171,13 +170,13 @@ public class GamePanel extends JPanel {
 			this.setLayout(null);
 			this.setOpaque(false);
 			this.setVisible(false);
-			setSize(700,800);
-			
+			setSize(700, 800);
+
 			label = new JLabel("GAME PAUSED", JLabel.CENTER);
 			label.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			label.setForeground(Color.WHITE);
-			label.setSize(300,200);
-			label.setLocation(200,200);
+			label.setSize(300, 200);
+			label.setLocation(200, 200);
 			add(label);
 		}
 
@@ -193,8 +192,9 @@ public class GamePanel extends JPanel {
 		public void waitThreadStart() {
 			System.out.println("대기 시작");
 			gameFrame.getStartBtn().setEnabled(false);
-	        gameFrame.getStopBtn().setEnabled(false);
-	        gameFrame.getExitBtn().setEnabled(false);
+			gameFrame.getStopBtn().setEnabled(false);
+			gameFrame.getExitBtn().setEnabled(false);
+			gameFrame.getMenu().setEnabled(false);
 			new WaitThread().start();
 		}
 
@@ -204,16 +204,17 @@ public class GamePanel extends JPanel {
 			gameFrame.getStopBtn().setVisible(true);
 			gameFrame.getStartBtn().setVisible(false);
 			gameFrame.getStartBtn().setText("시작");
-			
+
 			set.resumeGame();
 			pausePanel.setVisible(false);
-			
+
 			inputField.setEnabled(true); // 필드 활성화
 			inputField.requestFocus(); // 포커스 필드에 다시 주기
-			
+
 			gameFrame.getStartBtn().setEnabled(true);
-	        gameFrame.getStopBtn().setEnabled(true);
-	        gameFrame.getExitBtn().setEnabled(true);
+			gameFrame.getStopBtn().setEnabled(true);
+			gameFrame.getExitBtn().setEnabled(true);
+			gameFrame.getMenu().setEnabled(true);
 			label.setText("GAME PAUSED");
 		}
 
@@ -248,32 +249,32 @@ public class GamePanel extends JPanel {
 			this.setLayout(null);
 			this.setOpaque(false);
 			this.setVisible(false);
-			setSize(700,800);
-			setLocation(0,0);
-			
+			setSize(700, 800);
+			setLocation(0, 0);
+
 			label = new JLabel("GAME OVER", JLabel.CENTER);
 			label.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			label.setForeground(Color.WHITE);
-			label.setSize(300,200);
-			label.setLocation(200,100);
-			
-			scoreLabel = new JLabel("0",JLabel.CENTER);
+			label.setSize(300, 200);
+			label.setLocation(200, 100);
+
+			scoreLabel = new JLabel("0", JLabel.CENTER);
 			scoreLabel.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			scoreLabel.setForeground(Color.ORANGE);
-			scoreLabel.setSize(300,200);
-			scoreLabel.setLocation(200,200);
-			
+			scoreLabel.setSize(300, 200);
+			scoreLabel.setLocation(200, 200);
+
 			homeBtn = new JButton("나가기");
 			homeBtn.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			homeBtn.setForeground(Color.WHITE);
 			homeBtn.setBackground(Color.DARK_GRAY);
-			homeBtn.setSize(200,100);
-			homeBtn.setLocation(250,400);
-			
+			homeBtn.setSize(200, 100);
+			homeBtn.setLocation(250, 400);
+
 			add(label);
 			add(scoreLabel);
 			add(homeBtn);
-			
+
 			homeBtn.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -284,10 +285,12 @@ public class GamePanel extends JPanel {
 				}
 			});
 		}
+
 		public void threadStart() {
 			GameOverThread th = new GameOverThread();
 			th.start();
 		}
+
 		public void gameOver() {
 			set.stopGame();
 			gameFrame.setOverFlag();
@@ -302,11 +305,11 @@ public class GamePanel extends JPanel {
 
 			super.paintComponent(g);
 		}
-		
-		class GameOverThread extends Thread{
+
+		class GameOverThread extends Thread {
 			@Override
 			public void run() {
-				while(true) {
+				while (true) {
 					try {
 						sleep(100); // 추가하니까 해결
 						if (statusPanel.isGameOver()) {
