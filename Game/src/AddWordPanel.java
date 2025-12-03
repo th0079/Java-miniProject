@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -56,7 +58,9 @@ public class AddWordPanel extends JPanel {
 		add(wordField);
 		add(addBtn);
 		add(scrollPane);
+		addKeyListener(new ExitESC());
 		
+		setFocusable(true);
 		requestFocus();
 		setVisible(true); 
 
@@ -137,4 +141,15 @@ public class AddWordPanel extends JPanel {
 
 	}
 	
+	class ExitESC extends KeyAdapter{
+		@Override
+		public void keyPressed(KeyEvent e) {
+			int code = e.getKeyCode();
+			switch (code) {
+			case KeyEvent.VK_ESCAPE:
+				setVisible(false);
+				addWord.setVisible(false);
+			}
+		}
+	}
 }

@@ -3,6 +3,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -59,7 +61,7 @@ public class RankingPanel extends JPanel {
 		label.setForeground(Color.WHITE);
 
 		add(label);
-
+		addKeyListener(new ExitESC());
 		for (int i = 0; i < players.size(); i++) {
 			if (i==10) break; // 10등까지 출력
 			Player p = players.get(i);
@@ -74,9 +76,11 @@ public class RankingPanel extends JPanel {
 			add(rankLabel);
 
 		}
+		setFocusable(true);
 		requestFocus();
 		setVisible(true);
-
+		
+		makeRankingDialog();
 	}
 
 	@Override
@@ -139,5 +143,17 @@ public class RankingPanel extends JPanel {
 		ranking.setContentPane(this); // RankingPanel 넣기
 		ranking.setModal(true); // 다른 작업 못하게 modal 설정
 		ranking.setVisible(true); // 활성화
+	}
+	
+	class ExitESC extends KeyAdapter{
+		@Override
+		public void keyPressed(KeyEvent e) {
+			int code = e.getKeyCode();
+			switch (code) {
+			case KeyEvent.VK_ESCAPE:
+				setVisible(false);
+				ranking.setVisible(false);
+			}
+		}
 	}
 }

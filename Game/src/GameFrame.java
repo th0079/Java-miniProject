@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,6 +29,7 @@ public class GameFrame extends JFrame {
 	private ComboPanel comboPanel = new ComboPanel();
 	private StatusPanel statusPanel = new StatusPanel();
 	private AddWordPanel addWordPanel = null;
+	private SoundPanel soundPanel = null;
 	private PlayerPanel playerPanel = null;
 	private GamePanel gamePanel = null;
 	private RankingPanel rankingPanel = null;
@@ -43,7 +46,7 @@ public class GameFrame extends JFrame {
 		gamePanel = new GamePanel(this, scorePanel, comboPanel, statusPanel, tStore);
 		this.id = id;
 		playerPanel = new PlayerPanel(id);
-		rankingPanel = new RankingPanel(id,scorePanel);
+		// rankingPanel = new RankingPanel(id,scorePanel);
 		startBtn.setFont(font);
 		stopBtn.setFont(font);
 		exitBtn.setFont(font);
@@ -86,7 +89,6 @@ public class GameFrame extends JFrame {
 				System.out.println("랭킹 open");
 				stopAction(); // 게임 중일 경우 일시정지
 				rankingPanel = new RankingPanel(id, scorePanel); // 랭킹 패널 생성
-				rankingPanel.makeRankingDialog(); // 랭킹 Dialog 생성
 			}
 		});
 
@@ -96,6 +98,7 @@ public class GameFrame extends JFrame {
 				// 소리 설정 추가
 				System.out.println("소리설정 open");
 				stopAction(); // 게임 중일 경우 일시정지
+				soundPanel = new SoundPanel();
 			}
 		});
 
@@ -197,6 +200,7 @@ public class GameFrame extends JFrame {
 			}
 		});
 	}
+	
 	public void stopAction() { // 일시정지 메소드
 		if (!over && start && !stop) { // 플레이 중 게임오버 상태가 아니고 일시정지 상태가 아니면
 			stop = true; // stopFlag 활성화
