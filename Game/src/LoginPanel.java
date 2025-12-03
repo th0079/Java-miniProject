@@ -40,11 +40,11 @@ public class LoginPanel extends JPanel {
 			requestFocus();
 			setVisible(true);
 			
-			loginBtn.addActionListener(new ActionListener(){
+			loginBtn.addActionListener(new ActionListener(){ // 로그인 버튼 눌렀을 때
 				public void actionPerformed(ActionEvent e) {
-					setVisible(false);
-					login.setVisible(false);
-					inputCheck = true;
+					setVisible(false); // 패널 비활성화
+					login.setVisible(false); // Dialog 비활성화
+					inputCheck = true; // 입력 체크 활성화
 				}
 			});
 			
@@ -55,8 +55,8 @@ public class LoginPanel extends JPanel {
 		}
 		
 		public String getId() {
-			if(id.getText().trim().length() ==0) return "Unknown";
-			else return id.getText().trim();
+			if(id.getText().trim().length() ==0) return "Unknown"; // 빈칸으로 입력 시 Unknown으로 설정
+			else return id.getText().trim(); // 빈칸 아니면 좌우 공백 제거 후 반환
 		}
 		
 		@Override
@@ -72,12 +72,8 @@ public class LoginPanel extends JPanel {
 			login.setSize(400,300);
 			
 			login.setLocation(700,300);
-			login.setContentPane(this);
-			login.setModal(true);
+			login.setContentPane(this); // LoginPanel 넣기
+			login.setModal(true); // 다른 작업 못하게 modal 설정
 			login.setVisible(true);
-		}
-		
-		class LoginThread extends Thread {
-			
 		}
 }

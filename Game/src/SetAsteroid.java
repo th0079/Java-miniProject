@@ -33,64 +33,64 @@ public class SetAsteroid {
 		return stopFlag;
 	}
 
-	public void startGame() {
-		stopFlag = false;
-		reset = false;
+	public void startGame() { // 게임 시작 메소드
+		stopFlag = false; // stopFlag 비활성화
+		reset = false; // reset 비활성화
 		
-		asteroidSpawner = new AsteroidSpawner();
-		asteroidSpawner.start();
-		asteroidDestroyer = new AsteroidDestroyer();
-		asteroidDestroyer.start();
+		asteroidSpawner = new AsteroidSpawner(); // 소행성 spawner 스레드
+		asteroidSpawner.start(); // 소행성 생성 시작
+		asteroidDestroyer = new AsteroidDestroyer(); // 소행성 destroyer 스레드
+		asteroidDestroyer.start(); // 소행성 제거 시작
 	}
 
-	public void stopGame() {
-		stopFlag = true;
-		asteroidSpawner.interrupt();
-		asteroidDestroyer.interrupt();
+	public void stopGame() { // 게임 일시 정지 메소드
+		stopFlag = true; // stopFlag 활성화
+		asteroidSpawner.interrupt(); // spawner 스레드 종료
+		asteroidDestroyer.interrupt(); // destroyer 스레드 종료
 	}
 
-	public void resetGame() {
+	public void resetGame() { // 게임 초기화 메소드
 		System.out.println("소행성 개수 : " + asteroids.size());
-		for (int i=0; i<asteroids.size(); i++) {
+		for (int i=0; i<asteroids.size(); i++) { 
 			Asteroid a = asteroids.get(i);
-			a.interrupt();
+			a.interrupt(); // 실행 중인 asteroid 스레드 종료
 			groundPanel.remove(a.getLabel());
 			groundPanel.remove(a.getImageLabel());
 		}
-		asteroidSpawner.interrupt();
-		asteroidDestroyer.interrupt();
-		groundPanel.repaint();
-		asteroids.clear();
+		asteroidSpawner.interrupt(); // spawner 스레드 종료
+		asteroidDestroyer.interrupt(); // destroyer 스레드 종료
+		groundPanel.repaint(); // 다시 그리기
+		asteroids.clear(); // 벡터 초기화
 		System.out.println("소행성 초기화 : " + asteroids.size());
-		reset = true;
+		reset = true; // reset 상태
 	}
 
-	public void resumeGame() {
-		stopFlag = false;
+	public void resumeGame() { // 게임 재개 메소드 
+		stopFlag = false; // stopFlag 비활성화
 		
-		asteroidSpawner = new AsteroidSpawner();
-		asteroidSpawner.start();
-		asteroidDestroyer = new AsteroidDestroyer();
-		asteroidDestroyer.start();
+		asteroidSpawner = new AsteroidSpawner(); // 소행성 spawner 스레드
+		asteroidSpawner.start(); // 소행성 생성 시작
+		asteroidDestroyer = new AsteroidDestroyer(); // 소행성 destroyer 스레드
+		asteroidDestroyer.start(); // 소행성 제거 시작
 	}
 
-	public void spawnAsteroid(int level) {
-		int x = (int) (Math.random() * (groundPanel.getWidth() - 170)) + 40;
+	public void spawnAsteroid(int level) { // 생성되는 소행성 결정하는 메소드
+		int x = (int) (Math.random() * (groundPanel.getWidth() - 170)) + 40; // 무작위 x값 얻기
 
-		String word = tStore.getShortWord();
-		JLabel text = new JLabel(word, JLabel.CENTER);
+		String word = tStore.getShortWord(); // 6자리 이하 단어 
+		JLabel text = new JLabel(word, JLabel.CENTER); // 중앙 정렬
 		text.setFont(font);
 		Asteroid asteroid = null;
 		JLabel imageLabel = null;
-		double rand = Math.random();
+		double rand = Math.random(); // 0<rand<1 까지 랜덤값 생성
 
-		switch (level) {
+		switch (level) { // 레벨에 따른 생성 확률 변화
 		case 1: // 레벨1
-			if (rand < 0.9) {
+			if (rand < 0.9) { // 90% 
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			} else {
+			} else { // 10%
 				imageLabel = new JLabel(redAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
@@ -98,11 +98,11 @@ public class SetAsteroid {
 			break;
 
 		case 2: // 레벨2
-			if (rand < 0.7) {
+			if (rand < 0.7) { // 70%
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			} else {
+			} else { // 30%
 				imageLabel = new JLabel(redAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
@@ -110,16 +110,16 @@ public class SetAsteroid {
 			break;
 
 		case 3: // 레벨3
-			if (rand < 0.6) {
+			if (rand < 0.6) { // 60%
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			} else if (rand < 0.9) {
+			} else if (rand < 0.9) { // 30%
 				imageLabel = new JLabel(redAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
-			} else {
-				word = tStore.getLongWord();
+			} else { // 10%
+				word = tStore.getLongWord(); // 회색 소행성의 경우 7자 이상 단어
 				text = new JLabel(word, JLabel.CENTER);
 				text.setFont(font);
 				imageLabel = new JLabel(grayAsteroidImage);
@@ -131,26 +131,26 @@ public class SetAsteroid {
 
 		text.setSize(200, 30);
 		
-		text.setLocation(x,-100);
-		imageLabel.setLocation(x, -100);
+//		text.setLocation(x,-100);
+//		imageLabel.setLocation(x, -100);
 		
 		groundPanel.add(text);
 		groundPanel.add(imageLabel);
 
-		asteroids.add(asteroid);
-		asteroid.start();
+		asteroids.add(asteroid); // 벡터에 추가 
+		asteroid.start(); // 스레드 시작
 	}
 
-	class AsteroidSpawner extends Thread {
+	class AsteroidSpawner extends Thread { // 소행성 생성 스레드
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(1000); // 시작 or 재개할 때 딜레이
+				Thread.sleep(1000); // 시작 or 재개할 때 딜레이 1초
 				while (true) {
-					if (reset)
+					if (reset) // reset 상태면 종료
 						return;
-					spawnAsteroid(3);
-					Thread.sleep(2000); // 2초마다 소환
+					spawnAsteroid(1); // level에 맞게 소환
+					Thread.sleep(2000); // level에 따라 값 변경 (예정)
 				}
 			} catch (InterruptedException e) {
 				return;
@@ -158,16 +158,16 @@ public class SetAsteroid {
 		}
 	}
 
-	class AsteroidDestroyer extends Thread {
+	class AsteroidDestroyer extends Thread { // 소행성 파괴 스레드
 		@Override
 		public void run() {
 			try {
 				while (true) {
 					if (reset)
 						return;
-					checkY();
-					groundPanel.repaint();
-					Thread.sleep(100);
+					checkY(); // 소행성 y값 체크
+					groundPanel.repaint(); // 다시 그리기
+					Thread.sleep(100); // 0.1초 마다 체크
 				}
 			} catch (InterruptedException e) {
 				return;
@@ -177,17 +177,17 @@ public class SetAsteroid {
 	}
 
 	private void checkY() {
-		for (int i = asteroids.size() - 1; i >= 0; i--) {
+		for (int i = asteroids.size() - 1; i >= 0; i--) { // 뒤에서 부터 검사
 			Asteroid a = asteroids.get(i);
 			JLabel label = a.getLabel();
-			int limitY = groundPanel.getHeight();
+			int limitY = groundPanel.getHeight(); // 한계값 설정
 
-			if (label.getY() >= limitY - 40) {
-				groundPanel.remove(label);
-				groundPanel.remove(a.getImageLabel());
-				asteroids.remove(i);
+			if (label.getY() >= limitY - 40) { // 한계값 근처 도달 시
+				groundPanel.remove(label); // 텍스트 제거
+				groundPanel.remove(a.getImageLabel()); // 이미지 제거
+				asteroids.remove(i); // 벡터에서 제거
 
-				statusPanel.damaged(a.damage);
+				statusPanel.damaged(a.damage); // 소행성 데미지만큼 피해입음 
 				System.out.println("지구에게 " + a.damage + "데미지");
 			}
 		}

@@ -25,8 +25,8 @@ public class AddWordPanel extends JPanel {
 	private JTextField wordField = new JTextField(20);
 	private JButton addBtn = new JButton("저장");
 	private JDialog addWord = null;
-	private JList<String> wordList = new JList<String>();
-	private Vector<String> word = new Vector<String>();
+	private JList<String> wordList = new JList<String>(); // 단어 출력할 리스트
+	private Vector<String> word = new Vector<String>(); // 단어 받아와서 저장할 벡터
 	private JScrollPane scrollPane = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
@@ -49,7 +49,7 @@ public class AddWordPanel extends JPanel {
 		addBtn.setBounds(325, 100, 75, 30);
 		addBtn.setFont(font);
 		
-		scrollPane = new JScrollPane(wordList);
+		scrollPane = new JScrollPane(wordList); // 스크롤 패널에 wordList 넣기
 		scrollPane.setBounds(100,200,300,400);
 		
 		add(label);
@@ -58,14 +58,14 @@ public class AddWordPanel extends JPanel {
 		add(scrollPane);
 		
 		requestFocus();
-		setVisible(true);
+		setVisible(true); 
 
-		addBtn.addActionListener(new ActionListener() {
+		addBtn.addActionListener(new ActionListener() { // 저장 버튼을 누르면
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (wordField.getText().trim().length() > 0) {
+				if (wordField.getText().trim().length() > 0) { // 입력된 값이 있을 때
 					addWord();
-					wordField.setText("");
+					wordField.setText(""); // 입력창 초기화
 				}
 			}
 		});
@@ -80,56 +80,56 @@ public class AddWordPanel extends JPanel {
 	}
 
 	public void addWord() {
-		String newWord = wordField.getText().trim();
-		word.add(newWord);
-		writeFile(newWord);
-		wordList.setListData(word);
+		String newWord = wordField.getText().trim(); // 입력받은 값 앞뒤 공백 제거 후 반환
+		word.add(newWord); // word 벡터에 저장
+		writeFile(newWord); // text.txt 파일에 저장
+		wordList.setListData(word); // 리스트 저장
 		System.out.println(newWord +" 저장 완료");
 	}
 
 	public void writeFile(String word) {
 		try {
-			FileWriter fw = new FileWriter("file/text.txt", true);
+			FileWriter fw = new FileWriter("file/text.txt", true); // 파일 열기
 			PrintWriter pw = new PrintWriter(fw);
 
-			pw.println(word);
+			pw.println(word); // 입력받은 word 작성 후 줄바꿈
 
-			pw.close();
+			pw.close(); // 파일 닫기
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void makeAddWordDialog() {
-		addWord = new JDialog();
-
+	private void makeAddWordDialog() { // Dialog 생성 메소드
+		addWord = new JDialog(); // Dialog 객체 생성
+ 
 		addWord.setTitle("단어추가");
 		addWord.setSize(500, 700);
 
 		addWord.setLocation(700, 150);
-		addWord.setContentPane(this);
-		addWord.setModal(true);
-		addWord.setVisible(true);
+		addWord.setContentPane(this); // AddWordPanel 넣기
+		addWord.setModal(true); // 다른 작업 못하게 modal 설정
+		addWord.setVisible(true); // 활성화
 	}
 	
-	private void loadWord() {
+	private void loadWord() { // 파일에서 단어 읽기
 		try {
-			FileReader fr = new FileReader("file/text.txt");
+			FileReader fr = new FileReader("file/text.txt"); // 파일 열기
 			BufferedReader br = new BufferedReader(fr);
 
-			String line = "";
+			String line = ""; 
 			while (true) {
-				line = br.readLine();
+				line = br.readLine(); // 라인 읽기
 				
-				if (line == null)
+				if (line == null) // 라인 null 이면 break
 					break;
 
-				if (line.trim().length() > 0) {
-					word.add(line.trim());
+				if (line.trim().length() > 0) { // 공백 제거한 길이가 0이상이면
+					word.add(line.trim()); // word 벡터에 추가
 				}
 			}
-			br.close();
+			br.close(); // 파일 닫기
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

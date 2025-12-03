@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 public class ComboPanel extends JPanel {
 	private int combo = 0;
-	private boolean burning = false;
+	private boolean burning = false; // 버닝모드
 	private JLabel comboLabel = new JLabel("0", JLabel.CENTER);
 	private ImageIcon bgIcon = new ImageIcon("image/comboBg.png");
 	private Image bgImg = bgIcon.getImage();
@@ -45,12 +45,12 @@ public class ComboPanel extends JPanel {
 		return burning;
 	}
 
-	private void updateCombo() {
-		comboLabel.setText(Integer.toString(combo));
+	private void updateCombo() { // 콤보 업데이트 
+		comboLabel.setText(Integer.toString(combo)); // 텍스트 초기화
 
-		if (isBurning()) {
+		if (isBurning()) { // 버닝일때 텍스트 색 변경
 			comboLabel.setForeground(new Color(255,87,0));
-		}
+		} // 아니면 다시 원래 색으로 
 		else comboLabel.setForeground(Color.ORANGE);
 	}
 

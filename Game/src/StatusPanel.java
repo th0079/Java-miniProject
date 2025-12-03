@@ -30,23 +30,23 @@ public class StatusPanel extends JPanel {
 
 	}
 
-	public void damaged(int damage) {
-		hp -= damage;
-		if (hp <= 0) {
-			gameOver = true;
-			hp = 0;
+	public void damaged(int damage) { // 요격 실패 시 호출
+		hp -= damage; // damage만큼 hp 감소
+		if (hp <= 0) { 
+			gameOver = true; // gameOver 플레그 활성화
+			hp = 0; // 0아래로 안내려가게
 		}
-		hpLabel.setText(Integer.toString(hp));
+		hpLabel.setText(Integer.toString(hp)); // 라밸 갱신
 	}
 
 	public boolean isGameOver() {
 		return gameOver;
 	}
 	
-	public void resetHp() {
-		hp =100;
-		gameOver =false;
-		hpLabel.setText(Integer.toString(hp));
+	public void resetHp() { // 게임 초기화 시 호출
+		hp =100; // 지구 체력 100으로 초기화
+		gameOver =false; // gameOver 플래그 비활성화
+		hpLabel.setText(Integer.toString(hp)); // 라밸 갱신
 		System.out.println("hp reset");
 	}
 }
