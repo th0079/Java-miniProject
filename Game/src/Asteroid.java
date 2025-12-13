@@ -59,7 +59,8 @@ public class Asteroid extends Thread {
 				fall(); // 떨어짐
 				panel.repaint(); // 다시 그려주기 
 
-				if (y > panel.getHeight()) { // panel 끝에 도달하면 종료
+				if (y > panel.getHeight()-40) { // panel 끝에 도달하면 종료
+					set.destroyAsteroid(this);
 					break;
 				}
 
