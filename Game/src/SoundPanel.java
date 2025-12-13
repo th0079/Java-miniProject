@@ -16,7 +16,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class SoundPanel extends JPanel{
-	private SoundSetting soundSetting = new SoundSetting();
 	private JLabel title = new JLabel("소리 설정", JLabel.CENTER);
 	private JDialog sound = null;
 	private JSlider BGMSlider = null;
@@ -26,9 +25,9 @@ public class SoundPanel extends JPanel{
 	private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 	private Image bgImg = bgIcon.getImage();
 	
-	public SoundPanel() {
-		BGMSlider = new JSlider(0,100,soundSetting.bgmVolume);
-		SFXSlider = new JSlider(0,100,soundSetting.sfxVolume);
+	public SoundPanel(SoundManager soundManager) {
+		BGMSlider = new JSlider(0,100);
+		SFXSlider = new JSlider(0,100);
 		
 		setLayout(new GridLayout(3,1));
 		setSize(500, 400);
@@ -52,8 +51,8 @@ public class SoundPanel extends JPanel{
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider) e.getSource();
 				int value = source.getValue();
-				soundSetting.bgmVolume = value;
-				System.out.println("bgm:" + soundSetting.bgmVolume);
+				soundManager.setBGMVolume(value);
+				System.out.println("bgm:" + value);
 			}
 		});
 		
@@ -62,13 +61,12 @@ public class SoundPanel extends JPanel{
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider) e.getSource();
 				int value = source.getValue();
-				soundSetting.sfxVolume = value;
-				System.out.println("sfx:" + soundSetting.sfxVolume);
+				soundManager.setSFXVolume(value);
+				System.out.println("sfx:" + value);
 			}
 		});
-		
-		makeSoundDialog();
 	}
+	
 	public JPanel createSliderPanel(String text, JSlider slider) {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER,20,20));
 		panel.setOpaque(false);

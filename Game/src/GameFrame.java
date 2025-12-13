@@ -19,6 +19,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 
 public class GameFrame extends JFrame {
+	private SoundManager soundManager = new SoundManager();
 	private TextStore tStore = new TextStore();
 	private JButton startBtn = new JButton("시작");
 	private JButton stopBtn = new JButton("일시정지");
@@ -41,21 +42,20 @@ public class GameFrame extends JFrame {
 	private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 	private Image bgImg = bgIcon.getImage();
 	
+	
 	public GameFrame(String id) {
 		super("지구를 지켜라!");
 		gamePanel = new GamePanel(this, scorePanel, comboPanel, statusPanel, tStore);
 		this.id = id;
 		playerPanel = new PlayerPanel(id);
-		// rankingPanel = new RankingPanel(id,scorePanel);
 		startBtn.setFont(font);
 		stopBtn.setFont(font);
 		exitBtn.setFont(font);
 		setSize(1000, 800);
 		setResizable(false); // 창 크기 변경금지
 		setLocation(500, 100);
-
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		soundManager.playBGM("sound/background.wav");
 		makeMenu();
 		makeToolBar();
 		makeSplitPane();
@@ -86,29 +86,41 @@ public class GameFrame extends JFrame {
 		rankBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				soundManager.playSFX("sound/btnClick.wav");
 				System.out.println("랭킹 open");
 				stopAction(); // 게임 중일 경우 일시정지
-				rankingPanel = new RankingPanel(id, scorePanel); // 랭킹 패널 생성
+				if (rankingPanel == null) {
+					rankingPanel = new RankingPanel(id, scorePanel);
+				}
+				rankingPanel.makeRankingDialog();
 			}
 		});
 
 		soundItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				soundManager.playSFX("sound/btnClick.wav");
 				// 소리 설정 추가
 				System.out.println("소리설정 open");
 				stopAction(); // 게임 중일 경우 일시정지
-				soundPanel = new SoundPanel();
+				if (soundPanel == null) {
+                    soundPanel = new SoundPanel(soundManager);
+                }
+                soundPanel.makeSoundDialog();
 			}
 		});
 
 		wordItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				soundManager.playSFX("sound/btnClick.wav");
 				// 단어 설정 추가
 				System.out.println("단어추가 open");
 				stopAction(); // 게임 중일 경우 일시정지
-				addWordPanel = new AddWordPanel(); // 단어 추가 패널 생성
+				if (addWordPanel == null) {
+                    addWordPanel = new AddWordPanel();
+                }
+                addWordPanel.makeAddWordDialog();
 			}
 		});
 	}
@@ -161,6 +173,7 @@ public class GameFrame extends JFrame {
 		startBtn.addActionListener(new ActionListener() { // 시작 버튼 눌렀을 때 작동
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				soundManager.playSFX("sound/btnClick.wav");
 				System.out.println("start action");
 				if (!over) { // 게임오버 아닐 경우
 					if (!start) { // 시작 전일때
@@ -185,6 +198,7 @@ public class GameFrame extends JFrame {
 		stopBtn.addActionListener(new ActionListener() { // 일시정지 버튼 눌렀을 때 작동
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				soundManager.playSFX("sound/btnClick.wav");
 				System.out.println("stop action");
 				stopAction();
 			}
@@ -193,6 +207,7 @@ public class GameFrame extends JFrame {
 		exitBtn.addActionListener(new ActionListener() { // 나가기 버튼 눌렀을 때 작동
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				soundManager.playSFX("sound/btnClick.wav");
 				System.out.println("exit action"); 
 				gamePanel.resetGame(); // 게임 초기화
 				exitBtn.setVisible(false); // 나가기 버튼 비활성화

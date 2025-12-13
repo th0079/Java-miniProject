@@ -33,6 +33,7 @@ public class AddWordPanel extends JPanel {
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 	private Image bgImg = bgIcon.getImage();
+	private SoundManager soundManager = new SoundManager();
 	
 	public AddWordPanel() {
 		setLayout(null);
@@ -67,14 +68,13 @@ public class AddWordPanel extends JPanel {
 		addBtn.addActionListener(new ActionListener() { // 저장 버튼을 누르면
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				soundManager.playSFX("sound/btnClick.wav");
 				if (wordField.getText().trim().length() > 0) { // 입력된 값이 있을 때
 					addWord();
 					wordField.setText(""); // 입력창 초기화
 				}
 			}
 		});
-
-		makeAddWordDialog();
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class AddWordPanel extends JPanel {
 		}
 	}
 
-	private void makeAddWordDialog() { // Dialog 생성 메소드
+	public void makeAddWordDialog() { // Dialog 생성 메소드
 		addWord = new JDialog(); // Dialog 객체 생성
  
 		addWord.setTitle("단어추가");
@@ -147,7 +147,6 @@ public class AddWordPanel extends JPanel {
 			int code = e.getKeyCode();
 			switch (code) {
 			case KeyEvent.VK_ESCAPE:
-				setVisible(false);
 				addWord.setVisible(false);
 			}
 		}

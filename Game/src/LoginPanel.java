@@ -21,6 +21,7 @@ public class LoginPanel extends JPanel {
 		private boolean inputCheck = false;
 		private JDialog login = null;
 		private Font font = new Font("Galmuri9",Font.BOLD,20);
+		private SoundManager soundManager = new SoundManager();
 		
 		public LoginPanel() {
 			setLayout(null);
@@ -42,6 +43,7 @@ public class LoginPanel extends JPanel {
 			
 			loginBtn.addActionListener(new ActionListener(){ // 로그인 버튼 눌렀을 때
 				public void actionPerformed(ActionEvent e) {
+					soundManager.playSFX("sound/btnClick.wav");
 					setVisible(false); // 패널 비활성화
 					login.setVisible(false); // Dialog 비활성화
 					inputCheck = true; // 입력 체크 활성화

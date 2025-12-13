@@ -52,16 +52,27 @@ public class RankingPanel extends JPanel {
 		this.scorePanel = scorePanel; // 점수 받아올 클래스
 		setLayout(new GridLayout(11, 1));
 		setSize(500, 700);
-		loadPlayer();
 		
-		players.sort((p1, p2) -> p2.getScore() - p1.getScore()); // 내림차 순으로 정렬
-
 		label.setFont(mainFont);
 		label.setSize(300, 50);
 		label.setForeground(Color.WHITE);
 
 		add(label);
 		addKeyListener(new ExitESC());
+		
+		setFocusable(true);
+		requestFocus();
+		setVisible(true);
+		
+		loadPlayer();
+		updateRanking();
+	}
+	
+	public void updateRanking() {
+		this.removeAll();
+		add(label);
+		players.sort((p1, p2) -> p2.getScore() - p1.getScore()); // 내림차 순으로 정렬
+		
 		for (int i = 0; i < players.size(); i++) {
 			if (i==10) break; // 10등까지 출력
 			Player p = players.get(i);
@@ -76,13 +87,7 @@ public class RankingPanel extends JPanel {
 			add(rankLabel);
 
 		}
-		setFocusable(true);
-		requestFocus();
-		setVisible(true);
-		
-		makeRankingDialog();
 	}
-
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -90,6 +95,7 @@ public class RankingPanel extends JPanel {
 	}
 
 	public void loadPlayer() { // 파일에서 플레이어와 점수 읽기
+		players.clear();
 		try {
 			FileReader fr = new FileReader("file/players.txt"); // 파일 열기
 			BufferedReader br = new BufferedReader(fr);
@@ -134,6 +140,8 @@ public class RankingPanel extends JPanel {
 	}
 
 	public void makeRankingDialog() { // Dialog 생성 메소드
+		loadPlayer();
+		updateRanking();
 		ranking = new JDialog(); // Dialog 객체 생성
 
 		ranking.setTitle("랭킹");
@@ -151,7 +159,6 @@ public class RankingPanel extends JPanel {
 			int code = e.getKeyCode();
 			switch (code) {
 			case KeyEvent.VK_ESCAPE:
-				setVisible(false);
 				ranking.setVisible(false);
 			}
 		}

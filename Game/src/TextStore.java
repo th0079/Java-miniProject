@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
-public class TextStore { 
+public class TextStore {
 	private Vector<String> shortV = new Vector<String>(); // 푸른, 붉은 소행성에 나올 단어
 	private Vector<String> longV = new Vector<String>(); // 회색 소행성에 나올 단어
 
