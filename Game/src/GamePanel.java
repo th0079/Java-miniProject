@@ -137,6 +137,7 @@ public class GamePanel extends JPanel {
 					for (int i = 0; i < asteroids.size(); i++) { // 생성된 소행성의 텍스트값과 비교하기
 						Asteroid a = asteroids.get(i);
 						if (userText.equals(a.getText())) { // 맞았을 경우
+							soundManager.playSFX("sound/getScore.wav");
 							correct = true;
 							a.setEnd(true);
 							

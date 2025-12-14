@@ -62,25 +62,26 @@ public class ExplainPanel extends JPanel{
 		ex7.setSize(400,50);
 		add(ex7);
 		
-		JLabel ex8 = new JLabel(" 난이도는 쉬움, 중간, 어려움, 3가지 단계가 있으며,");
+		JLabel ex8 = new JLabel(" 500점 >> 레벨: 2단계, 1000점 >> 레벨: 3단계");
 		ex8.setFont(font);
-		ex8.setForeground(Color.WHITE);
+		ex8.setForeground(Color.PINK);
 		ex8.setSize(400,50);
 		add(ex8);
 		setVisible(true);
-		JLabel ex9 = new JLabel(" 난이도가 높아질수록 소행성 생성 속도가 빨라짐");
+		
+		JLabel ex9 = new JLabel(" 난이도가 어려워질수록 소행성 생성 속도가 빨라진다.");
 		ex9.setFont(font);
 		ex9.setForeground(Color.WHITE);
 		ex9.setSize(400,50);
 		add(ex9);
-		setVisible(true);
+		setVisible(true);		
 		
-//		JLabel ex10 = new JLabel(" 시작버튼을 눌러 시작 및 재개를 할 수 있고");
-//		ex10.setFont(font);
-//		ex10.setForeground(Color.WHITE);
-//		ex10.setSize(400,50);
-//		add(ex10);
-//		setVisible(true);
+		JLabel ex10 = new JLabel(" 레벨이 올라가면 붉은 소행성과 회색 소행성의 출현 확률이 증가한다.");
+		ex10.setFont(font);
+		ex10.setForeground(Color.WHITE);
+		ex10.setSize(400,50);
+		add(ex10);
+		setVisible(true);
 //		JLabel ex11 = new JLabel(" 일시정지 버튼으로 정지할 수 있음");
 //		ex11.setFont(font);
 //		ex11.setForeground(Color.WHITE);

@@ -49,7 +49,6 @@ public class GameFrame extends JFrame {
 	private boolean over = false; // 게임오버 시 활성화
 	private boolean pauseMainBGM = false;
 	private int difficulty =0;
-	private int level = 1;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	
 	
@@ -152,6 +151,9 @@ public class GameFrame extends JFrame {
 			tBar.add(rb[i]);
 		}
 		rb[0].setSelected(true);
+		rb[0].setToolTipText("2초마다 소행성 생성");
+		rb[1].setToolTipText("1.85초마다 소행성 생성");
+		rb[2].setToolTipText("1.6초마다 소행성 생성");
 		
 		stopBtn.setVisible(false); // 일시정지 버튼 게임 중 아니면 숨기기
 		exitBtn.setVisible(false); // 나가기 버튼 게임 중 아니면 숨기기
@@ -185,6 +187,7 @@ public class GameFrame extends JFrame {
 						levLabel.setVisible(true);
 						
 						gamePanel.startGame(); // gamePanel의 startGame 호출
+						
 					} else if (stop) { // 정지 상태일 경우
 						stop = false; // stopFlag 해제
 						startBtn.setVisible(false); // 시작버튼 비활성화
@@ -210,12 +213,16 @@ public class GameFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				soundManager.playSFX("sound/btnClick.wav");
+				soundManager.pauseBGM();
+				soundManager.playBGM("sound/background.wav");
 				System.out.println("exit action"); 
 				gamePanel.resetGame(); // 게임 초기화
 				exitBtn.setVisible(false); // 나가기 버튼 비활성화
 				curState.setVisible(false);
 				levLabel.setVisible(false);
+			
 				resetFlag();
+				repaint();
 			}
 		});
 		
@@ -224,6 +231,7 @@ public class GameFrame extends JFrame {
 	class MyItemListener implements ItemListener { // 난이도 선택 라디오 이벤트
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.DESELECTED) return;
+			soundManager.playSFX("sound/btnClick.wav");
 			if (rb[0].isSelected()) difficulty = 0;
 			else if (rb[1].isSelected()) difficulty = 1;
 			else difficulty = 2;
@@ -270,6 +278,8 @@ public class GameFrame extends JFrame {
 		over = true;
 		exitBtn.setVisible(false);
 		rankingPanel.addRanking();
+		curState.setVisible(false);
+		levLabel.setVisible(false);
 	}
 
 	public void resetOverFlag() { // overFlag 초기화
@@ -297,8 +307,7 @@ public class GameFrame extends JFrame {
 	}
 	
 	public void setLevel(int level) {
-		this.level = level;
-		levLabel.setText(" , 레벨: " + level + "단계");
+		levLabel.setText("  레벨: " + level + "단계");
 	}
 	
 	public int getDifficulty() {

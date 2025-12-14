@@ -16,11 +16,13 @@ public class SetAsteroid {
 	private ImageIcon redAsteroidImage = new ImageIcon("image/RedAsteroid.png");
 	private ImageIcon grayAsteroidImage = new ImageIcon("image/GrayAsteroid.png");
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
+	private SoundManager soundManager = new SoundManager();
 	private boolean stopFlag = false;
 	private boolean reset = false;
 	private AsteroidSpawner asteroidSpawner = null;
 	private int difficulty=0;
 	private int level=1;
+	private int curLev=1;
 	
 	public SetAsteroid(GameFrame gameFrame, GamePanel.GroundPanel groundPanel, 
 			StatusPanel statusPanel, ComboPanel comboPanel, ScorePanel scorePanel, 
@@ -143,8 +145,8 @@ public class SetAsteroid {
 			}
 			break;
 		}
-		int curLev = 1;
 		if (level > curLev) {
+			soundManager.playSFX("sound/levelUp.wav");
 			curLev = level;
 			System.out.println("레벨: " + curLev);
 		}
@@ -172,10 +174,10 @@ public class SetAsteroid {
 					if (score <500) level = 1;
 					else if (score < 1000) level = 2;
 					else level = 3;
-				
+					
 					gameFrame.setLevel(level);
 					spawnAsteroid(level); // level에 맞게 소환
-					Thread.sleep(2000-difficulty*250); // 난이도 높을수록 더 빨리 소환
+					Thread.sleep(2000-difficulty*(100+difficulty*50)); // 난이도 높을수록 더 빨리 소환 (쉬움:2초, 중간:1.85초, 어려움:1.6초)
 				}
 			} catch (InterruptedException e) {
 				return;
