@@ -42,14 +42,14 @@ public class AddWordPanel extends JPanel {
 		wordList.setListData(word);
 		wordList.setFont(font);
 		
-		label.setFont(font);
+		label.setFont(font); // 설명
 		label.setBounds(100, 50, 300, 50);
 		label.setForeground(Color.WHITE);
 
-		wordField.setBounds(100, 100, 225, 30);
+		wordField.setBounds(100, 100, 225, 30); // 단어 입력란
 		wordField.setFont(font);
 
-		addBtn.setBounds(325, 100, 75, 30);
+		addBtn.setBounds(325, 100, 75, 30); // 추가 버튼
 		addBtn.setFont(font);
 		
 		scrollPane = new JScrollPane(wordList); // 스크롤 패널에 wordList 넣기
@@ -60,6 +60,7 @@ public class AddWordPanel extends JPanel {
 		add(addBtn);
 		add(scrollPane);
 		addKeyListener(new ExitESC());
+		wordField.addKeyListener(new ExitESC());
 		
 		setFocusable(true);
 		requestFocus();

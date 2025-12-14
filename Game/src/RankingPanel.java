@@ -59,7 +59,7 @@ public class RankingPanel extends JPanel {
 
 		add(label);
 		addKeyListener(new ExitESC());
-		
+
 		setFocusable(true);
 		requestFocus();
 		setVisible(true);

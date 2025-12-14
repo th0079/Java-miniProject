@@ -7,7 +7,7 @@ import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
 	private static Clip bgmClip;
-	private static float sfxVolume = -10.0f;
+	private static float sfxVolume = 0.0f;
 	
 	public void playBGM(String name) {
 		File soundFile = new File(name);

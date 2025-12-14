@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,7 +37,7 @@ public class LoginPanel extends JPanel {
 			id.setFont(font);
 			loginBtn.setBounds(150,150,100,50);
 			loginBtn.setFont(font);
-			
+			id.addKeyListener(new Enter());
 			add(label);
 			add(id);
 			add(loginBtn);
@@ -78,4 +81,19 @@ public class LoginPanel extends JPanel {
 			login.setModal(true); // 다른 작업 못하게 modal 설정
 			login.setVisible(true);
 		}
+		
+		class Enter extends KeyAdapter{
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int code = e.getKeyCode();
+				switch (code) {
+				case KeyEvent.VK_ENTER:
+					soundManager.playSFX("sound/btnClick.wav");
+					setVisible(false); // 패널 비활성화
+					login.setVisible(false); // Dialog 비활성화
+					inputCheck = true; // 입력 체크 활성화
+				}
+			}
+		}
+		
 }
