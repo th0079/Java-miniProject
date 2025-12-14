@@ -137,6 +137,8 @@ public class GamePanel extends JPanel {
 						Asteroid a = asteroids.get(i);
 						if (userText.equals(a.getText())) { // 맞았을 경우
 							correct = true;
+							a.setEnd(true);
+							
 							comboPanel.increaseCombo(); // 콤보 증가
 
 							int score = a.getScore(); // 소행성 점수 가져오기
@@ -149,8 +151,9 @@ public class GamePanel extends JPanel {
 							groundPanel.remove(a.getLabel()); // 맞춘 소행성 텍스트 삭제
 							groundPanel.remove(a.getImageLabel()); // 이미지 삭제
 							groundPanel.repaint(); // 다시 그리기
-
+								
 							asteroids.remove(i); // 벡터에서 지우기
+							
 							break; // 하나 맞췄으니 루프 종료
 						}
 					}

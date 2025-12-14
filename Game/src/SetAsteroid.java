@@ -142,7 +142,7 @@ public class SetAsteroid {
 				while (true) {
 					if (reset) // reset 상태면 종료
 						return;
-					spawnAsteroid(1); // level에 맞게 소환
+					spawnAsteroid(3); // level에 맞게 소환
 					Thread.sleep(2000); // level에 따라 값 변경 (예정)
 				}
 			} catch (InterruptedException e) {
@@ -153,10 +153,7 @@ public class SetAsteroid {
 
 	public void destroyAsteroid(Asteroid a) {
 	    if (reset || !asteroids.contains(a)) return;
-
-	    groundPanel.remove(a.getLabel());
-	    groundPanel.remove(a.getImageLabel());
-	    
+    
 	    asteroids.remove(a);
 
 	    statusPanel.damaged(a.damage);
@@ -164,21 +161,4 @@ public class SetAsteroid {
 	    
 	    groundPanel.repaint();
 	}
-
-//	private void checkY() {
-//		for (int i = asteroids.size() - 1; i >= 0; i--) { // 뒤에서 부터 검사
-//			Asteroid a = asteroids.get(i);
-//			JLabel label = a.getLabel();
-//			int limitY = groundPanel.getHeight(); // 한계값 설정
-//
-//			if (label.getY() >= limitY - 40) { // 한계값 근처 도달 시
-//				groundPanel.remove(label); // 텍스트 제거
-//				groundPanel.remove(a.getImageLabel()); // 이미지 제거
-//				asteroids.remove(i); // 벡터에서 제거
-//
-//				statusPanel.damaged(a.damage); // 소행성 데미지만큼 피해입음 
-//				System.out.println("지구에게 " + a.damage + "데미지");
-//			}
-//		}
-//	}
 }

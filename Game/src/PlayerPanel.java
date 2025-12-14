@@ -21,12 +21,12 @@ public class PlayerPanel extends JPanel { // 플레이어 id 나오는 패널
 	public PlayerPanel(String id) {
 		setLayout(new BorderLayout());
 		setSize(275, 200);
-		String idLine = "[" + id + "]";
-		userId = new JLabel(idLine, JLabel.CENTER); // 중앙 정렬
+		userId = new JLabel(id, JLabel.CENTER); // 중앙 정렬
 		userId.setSize(100, 100);
 		userId.setFont(new Font("Galmuri9", Font.BOLD, 30));
 		userId.setForeground(Color.WHITE);
-
+		userId.setOpaque(true);
+		userId.setBackground(new Color(0, 0, 0, 150));
 		add(userId, BorderLayout.SOUTH); // id label 남쪽 배치
 	}
 }

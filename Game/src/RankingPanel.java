@@ -128,10 +128,10 @@ public class RankingPanel extends JPanel {
 		try {
 			FileWriter fw = new FileWriter("file/players.txt", true); // 파일 열기
 			PrintWriter pw = new PrintWriter(fw);
-
-			pw.println(id); // id 적고 줄바꿈
-			pw.println(scorePanel.getScore()); // 점수 받아오고 줄바꿈
-
+			if (scorePanel.getScore() >0) {
+				pw.println(id); // id 적고 줄바꿈
+				pw.println(scorePanel.getScore()); // 점수 받아오고 줄바꿈
+			}
 			pw.close(); // 파일 닫기
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

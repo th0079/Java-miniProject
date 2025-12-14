@@ -1,5 +1,6 @@
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Asteroid extends Thread {
@@ -8,11 +9,14 @@ public class Asteroid extends Thread {
 	protected int score; // 파괴 시 점수
 	protected int damage; // 받는 데미지
 	protected int speed; // 소행성 속도
+	private boolean isEnd = false;
 	protected JLabel imageLabel; // 소행성 이미지
+	private ImageIcon explosionImg = new ImageIcon("image/explosion.png");
 	private GamePanel.GroundPanel panel;
 	private JLabel text;
 	private SetAsteroid set = null;
-
+	private SoundManager soundManager = new SoundManager();
+	
 	public Asteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		this.panel = panel;
 		this.x = x;
@@ -37,13 +41,16 @@ public class Asteroid extends Thread {
 	public int getScore() {
 		return score;
 	}
-
+	
+	public void setEnd(boolean isEnd) {
+		this.isEnd = isEnd;
+	}
 	public void fall() { // 소행성 추락
 		y += speed;
 
 		imageLabel.setLocation((int) x, (int) y);
 		int textX = (int) x + (imageLabel.getWidth() - text.getWidth()) / 2;
-		int textY = (int) y + (imageLabel.getHeight() - text.getHeight()) / 2;
+		int textY = (int) y + imageLabel.getHeight()-5;
 		text.setLocation(textX, textY);
 	}
 
@@ -51,7 +58,7 @@ public class Asteroid extends Thread {
 	public void run() { 
 		try {
 			while (true) {
-				if (set.checkReset()) break; // 게임이 리셋 되었으면 종료
+				if (set.checkReset() || isEnd) break; // 게임이 리셋 되었으면 종료
 				if (set.getStopFlag()) { // 게임 일시정지 시 대기
 					Thread.sleep(100);
 	                continue;
@@ -59,8 +66,21 @@ public class Asteroid extends Thread {
 				fall(); // 떨어짐
 				panel.repaint(); // 다시 그려주기 
 
-				if (y > panel.getHeight()-40) { // panel 끝에 도달하면 종료
+				if (y > panel.getHeight()-40 && imageLabel!=null) { // panel 끝에 도달하면 종료
+					soundManager.playSFX("sound/boom.wav");
 					set.destroyAsteroid(this);
+					int prevWidth = imageLabel.getWidth();
+					imageLabel.setIcon(explosionImg);
+					int size = 200;
+					imageLabel.setSize(size, size);
+					
+					int newX = (size-prevWidth)/2;
+					imageLabel.setLocation((int)x - newX, panel.getHeight()-100);
+					text.setVisible(false);
+					imageLabel.repaint();
+					
+					Thread.sleep(1000);
+					panel.remove(imageLabel);
 					break;
 				}
 

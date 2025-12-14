@@ -48,6 +48,7 @@ public class GameFrame extends JFrame {
 		gamePanel = new GamePanel(this, scorePanel, comboPanel, statusPanel, tStore);
 		this.id = id;
 		playerPanel = new PlayerPanel(id);
+		rankingPanel = new RankingPanel(id, scorePanel);
 		startBtn.setFont(font);
 		stopBtn.setFont(font);
 		exitBtn.setFont(font);
@@ -60,7 +61,6 @@ public class GameFrame extends JFrame {
 		makeToolBar();
 		makeSplitPane();
 		setVisible(true);
-
 	}
 
 	private void makeMenu() {
@@ -89,16 +89,13 @@ public class GameFrame extends JFrame {
 				soundManager.playSFX("sound/btnClick.wav");
 				System.out.println("랭킹 open");
 				stopAction(); // 게임 중일 경우 일시정지
-				if (rankingPanel == null) {
-					rankingPanel = new RankingPanel(id, scorePanel);
-				}
 				rankingPanel.makeRankingDialog();
 			}
 		});
 
 		soundItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) { 
 				soundManager.playSFX("sound/btnClick.wav");
 				// 소리 설정 추가
 				System.out.println("소리설정 open");
