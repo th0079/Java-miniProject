@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -76,24 +77,41 @@ public class RankingPanel extends JPanel {
 		for (int i = 0; i < players.size(); i++) {
 			if (i==10) break; // 10등까지 출력
 			Player p = players.get(i);
-			String rankId = p.getId();
+			
+			String id = i + 1 + ". " + p.getId() + " : ";
 			String rankScore = Integer.toString(p.getScore());
-
-			String rankLine = i + 1 + ". " + rankId + " : " + rankScore;
-			JLabel rankLabel = new JLabel(rankLine, JLabel.CENTER);
-			rankLabel.setFont(subFont);
-			rankLabel.setSize(200, 40);
-			rankLabel.setForeground(Color.WHITE);
-			add(rankLabel);
-
+			
+			makeRankLine(i, id, rankScore);
+			repaint();
 		}
+	}
+	public void makeRankLine(int i, String id, String score) {
+		JPanel p = new JPanel();
+		p.setLayout(new FlowLayout());
+		p.setOpaque(false);
+		
+		JLabel rankId = new JLabel(id, JLabel.CENTER);
+		rankId.setFont(subFont);
+		rankId.setForeground(Color.WHITE);
+		
+		JLabel rankScore = new JLabel(score, JLabel.CENTER);
+		rankScore.setFont(subFont);
+		if (i==0) rankScore.setForeground(new Color(255, 215, 0));
+		else if (i==1) rankScore.setForeground(new Color(204,204,204));
+		else if (i==2) rankScore.setForeground(new Color(205,127,50));
+		else rankScore.setForeground(Color.WHITE);
+		
+		p.add(rankId);
+		p.add(rankScore);
+		
+		this.add(p);
 	}
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(bgImg, 0, 0, getWidth(), getHeight(), this);
 	}
-
+	
 	public void loadPlayer() { // 파일에서 플레이어와 점수 읽기
 		players.clear();
 		try {

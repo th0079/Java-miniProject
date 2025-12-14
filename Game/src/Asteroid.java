@@ -12,6 +12,7 @@ public class Asteroid extends Thread {
 	private boolean isEnd = false;
 	protected JLabel imageLabel; // 소행성 이미지
 	private ImageIcon explosionImg = new ImageIcon("image/explosion.png");
+	private ImageIcon explosionImg2 = new ImageIcon("image/explosion2.png");
 	private GamePanel.GroundPanel panel;
 	private JLabel text;
 	private SetAsteroid set = null;
@@ -60,15 +61,32 @@ public class Asteroid extends Thread {
 	public void run() { 
 		try {
 			while (true) {
-				if (set.checkReset() || isEnd) break; // 게임이 리셋 되었으면 종료
+				if (set.checkReset()) break; // 게임이 리셋 되었으면 종료
 				if (set.getStopFlag()) { // 게임 일시정지 시 대기
 					Thread.sleep(100);
 	                continue;
 	            }
-				fall(); // 떨어짐
-				panel.repaint(); // 다시 그려주기 
+				if (isEnd) {
+					soundManager.playSFX("sound/boom2.wav");
+					int prevWidth = imageLabel.getWidth();
+					imageLabel.setIcon(explosionImg2);
+					
+					int size = 200;
+					imageLabel.setSize(size, size);
+					
+					int newX = (size-prevWidth)/2;
+					imageLabel.setLocation((int)x - newX, (int)y);
+					
+					panel.remove(text);
+					imageLabel.repaint();
+					
+					Thread.sleep(100);
+					panel.remove(imageLabel);
+					
+					break;
+				}
 
-				if (y > panel.getHeight()-40 && imageLabel!=null) { // panel 끝에 도달하면 종료
+				if (y > panel.getHeight()-40) { // panel 끝에 도달하면 종료
 					soundManager.playSFX("sound/boom.wav");
 					comboPanel.resetCombo();
 					
@@ -87,7 +105,9 @@ public class Asteroid extends Thread {
 					panel.remove(imageLabel);
 					break;
 				}
-
+				
+				fall(); // 떨어짐
+				panel.repaint(); // 다시 그려주기 
 				Thread.sleep(100); // 0.1초마다 갱신
 			}
 		} catch (InterruptedException e) {

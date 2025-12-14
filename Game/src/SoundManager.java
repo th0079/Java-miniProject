@@ -22,6 +22,10 @@ public class SoundManager {
         }
 	}
 	
+	public void pauseBGM() {
+		bgmClip.close();
+	}
+	
 	public void playSFX(String name) {
 		File soundFile = new File(name);
 		try {

@@ -396,7 +396,6 @@ huge
 human
 hundred
 husband
-I
 idea
 identify
 if
@@ -531,8 +530,6 @@ mouth
 move
 movement
 movie
-Mr
-Mrs
 much
 music
 must
@@ -564,7 +561,6 @@ note
 nothing
 notice
 now
-n't
 number
 occur
 of
@@ -633,7 +629,6 @@ plan
 plant
 play
 player
-PM
 point
 police
 policy
@@ -759,8 +754,6 @@ service
 set
 seven
 several
-sex
-sexual
 shake
 share
 she
@@ -916,7 +909,7 @@ true
 truth
 try
 turn
-TV
+tv
 two
 type
 under

@@ -30,6 +30,7 @@ public class GamePanel extends JPanel {
 	private Vector<Asteroid> asteroids = new Vector<Asteroid>(); // 화면에 출력 중인 소행성 저장할 백터
 	private SetAsteroid set = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
+	private SoundManager soundManager = new SoundManager();
 
 	public GamePanel(GameFrame gameFrame, ScorePanel scorePanel, ComboPanel comboPanel, StatusPanel statusPanel,
 			TextStore tStore) {
@@ -38,7 +39,7 @@ public class GamePanel extends JPanel {
 		this.scorePanel = scorePanel;
 		this.comboPanel = comboPanel;
 		this.statusPanel = statusPanel;
-
+		
 		inputField.setFont(font);
 
 		exPanel = new ExplainPanel();
@@ -52,10 +53,12 @@ public class GamePanel extends JPanel {
 		gameOverPanel.setBounds(0, 0, 700, 800);
 		pausePanel.setBounds(0, 0, 700, 800);
 
-		set = new SetAsteroid(groundPanel, statusPanel, comboPanel, tStore, asteroids);
+		set = new SetAsteroid(gameFrame, groundPanel, statusPanel, comboPanel, scorePanel, tStore, asteroids);
 	}
 
 	public void startGame() { // 게임 시작 메소드
+		int difficulty = gameFrame.getDifficulty();
+		set.setDifficulty(difficulty);
 		exPanel.setVisible(false); // 설명 화면 비활성화
 		set.startGame(); // setAsteroid startGame() 호출
 		gameOverPanel.threadStart(); // 게임오버 체크하는 스레드 실행
@@ -136,7 +139,7 @@ public class GamePanel extends JPanel {
 						if (userText.equals(a.getText())) { // 맞았을 경우
 							correct = true;
 							a.setEnd(true);
-
+							
 							comboPanel.increaseCombo(); // 콤보 증가
 
 							int score = a.getScore(); // 소행성 점수 가져오기
@@ -146,10 +149,6 @@ public class GamePanel extends JPanel {
 							scorePanel.increse(score); // 점수 증가
 							gameOverPanel.scoreLabel.setText(Integer.toString(scorePanel.getScore())); // 게임오버 패널 점수 변경
 
-							groundPanel.remove(a.getLabel()); // 맞춘 소행성 텍스트 삭제
-							groundPanel.remove(a.getImageLabel()); // 이미지 삭제
-							groundPanel.repaint(); // 다시 그리기
-
 							asteroids.remove(i); // 벡터에서 지우기
 
 							break; // 하나 맞췄으니 루프 종료
@@ -157,6 +156,7 @@ public class GamePanel extends JPanel {
 					}
 					if (!correct) { // 틀렸을 때
 						comboPanel.resetCombo(); // 콤보 초기화
+						soundManager.playSFX("sound/miss.wav");
 					}
 					inputField.setText(""); // 입력창 비우기
 				}
@@ -281,6 +281,9 @@ public class GamePanel extends JPanel {
 			homeBtn.addActionListener(new ActionListener() { // 나가기 버튼 눌렀을 때
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					soundManager.playSFX("sound/btnClick.wav");
+					soundManager.pauseBGM();
+					soundManager.playBGM("sound/background.wav");
 					setVisible(false); // 게임오버패널 비활성화
 					gameFrame.resetFlag(); // 플래그 초기화
 					resetGame(); // 게임 초기화 메소드 호출

@@ -62,7 +62,7 @@ public class ExplainPanel extends JPanel{
 		ex7.setSize(400,50);
 		add(ex7);
 		
-		JLabel ex8 = new JLabel(" 쉬움, 중간, 어려움, 3가지 단계가 있으며,");
+		JLabel ex8 = new JLabel(" 난이도는 쉬움, 중간, 어려움, 3가지 단계가 있으며,");
 		ex8.setFont(font);
 		ex8.setForeground(Color.WHITE);
 		ex8.setSize(400,50);

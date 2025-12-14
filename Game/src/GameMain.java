@@ -7,7 +7,7 @@ public class GameMain {
 		if (loginPanel.isInput()) { // 입력된 id가 있을 경우
 			new GameFrame(loginPanel.getId()); // GameFrame 객체 생성하면서 인자로 id 넣기
 		}
-		System.out.println(loginPanel.getId());
+		System.out.println("플레이어: " +loginPanel.getId());
 	}
 
 }
