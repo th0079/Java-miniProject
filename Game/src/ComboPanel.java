@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ComboPanel extends JPanel {
-	private int combo = 0;
+	private static int combo = 0;
 	private boolean burning = false; // 버닝모드
 	private JLabel comboLabel = new JLabel("0", JLabel.CENTER);
 	private ImageIcon bgIcon = new ImageIcon("image/comboBg.png");

@@ -43,6 +43,8 @@ public class SoundPanel extends JPanel{
 		add(SFXPanel);
 		
 		addKeyListener(new ExitESC());
+		BGMSlider.addKeyListener(new ExitESC());
+		SFXSlider.addKeyListener(new ExitESC());
 		setFocusable(true);
 		requestFocus();
 		

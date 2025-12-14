@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 public class SetAsteroid {
 	private GamePanel.GroundPanel groundPanel = null;
 	private StatusPanel statusPanel = null;
+	private ComboPanel comboPanel = null;
 	private TextStore tStore;
 	private Vector<Asteroid> asteroids;
 	private ImageIcon blueAsteroidImage = new ImageIcon("image/blueAsteroid.png");
@@ -15,14 +16,16 @@ public class SetAsteroid {
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private boolean stopFlag = false;
 	private boolean reset = false;
-	private AsteroidSpawner asteroidSpawner = null; 
+	private AsteroidSpawner asteroidSpawner = null;
 	
-	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, TextStore tStore,
-			Vector<Asteroid> asteroids) {
+	
+	public SetAsteroid(GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, ComboPanel comboPanel,
+			TextStore tStore, Vector<Asteroid> asteroids) {
 		this.groundPanel = groundPanel;
 		this.tStore = tStore;
 		this.asteroids = asteroids;
 		this.statusPanel = statusPanel;
+		this.comboPanel = comboPanel;
 	}
 
 	public boolean checkReset() {
@@ -31,7 +34,9 @@ public class SetAsteroid {
 	public boolean getStopFlag() {
 		return stopFlag;
 	}
-
+	public ComboPanel getComboPanel() {
+		return comboPanel;
+	}
 	public void startGame() { // 게임 시작 메소드
 		stopFlag = false; // stopFlag 비활성화
 		reset = false; // reset 비활성화

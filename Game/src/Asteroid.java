@@ -16,6 +16,7 @@ public class Asteroid extends Thread {
 	private JLabel text;
 	private SetAsteroid set = null;
 	private SoundManager soundManager = new SoundManager();
+	private ComboPanel comboPanel = null;
 	
 	public Asteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		this.panel = panel;
@@ -24,6 +25,7 @@ public class Asteroid extends Thread {
 		this.text = text;
 		this.text.setForeground(Color.white);
 		set = panel.getSetAsteroid();
+		comboPanel = set.getComboPanel();
 	}
 
 	public String getText() {
@@ -68,6 +70,8 @@ public class Asteroid extends Thread {
 
 				if (y > panel.getHeight()-40 && imageLabel!=null) { // panel 끝에 도달하면 종료
 					soundManager.playSFX("sound/boom.wav");
+					comboPanel.resetCombo();
+					
 					set.destroyAsteroid(this);
 					int prevWidth = imageLabel.getWidth();
 					imageLabel.setIcon(explosionImg);

@@ -52,10 +52,9 @@ public class GamePanel extends JPanel {
 		gameOverPanel.setBounds(0, 0, 700, 800);
 		pausePanel.setBounds(0, 0, 700, 800);
 
-		set = new SetAsteroid(groundPanel, statusPanel, tStore, asteroids);
+		set = new SetAsteroid(groundPanel, statusPanel, comboPanel, tStore, asteroids);
 	}
 
-	
 	public void startGame() { // 게임 시작 메소드
 		exPanel.setVisible(false); // 설명 화면 비활성화
 		set.startGame(); // setAsteroid startGame() 호출
@@ -63,7 +62,6 @@ public class GamePanel extends JPanel {
 		inputField.requestFocus(); // 단어 입력 창에 포커스
 	}
 
-	 
 	public void stopGame() { // 일시정지 메소드
 		set.stopGame(); // setAsteroid stopGame() 호출
 		pausePanel.setVisible(true);
@@ -74,7 +72,7 @@ public class GamePanel extends JPanel {
 		pausePanel.waitThreadStart(); // 대기 스레드 시작
 	}
 
-	public void resetGame() { // 게임 초기화 메소드 
+	public void resetGame() { // 게임 초기화 메소드
 		gameFrame.getStartBtn().setVisible(true); // 시작 버튼 활성화
 		gameFrame.getStopBtn().setVisible(false); // 일시정지버튼 비활성화
 		gameFrame.getRankBtn().setVisible(true); // 랭킹 버튼 활성화
@@ -138,7 +136,7 @@ public class GamePanel extends JPanel {
 						if (userText.equals(a.getText())) { // 맞았을 경우
 							correct = true;
 							a.setEnd(true);
-							
+
 							comboPanel.increaseCombo(); // 콤보 증가
 
 							int score = a.getScore(); // 소행성 점수 가져오기
@@ -151,9 +149,9 @@ public class GamePanel extends JPanel {
 							groundPanel.remove(a.getLabel()); // 맞춘 소행성 텍스트 삭제
 							groundPanel.remove(a.getImageLabel()); // 이미지 삭제
 							groundPanel.repaint(); // 다시 그리기
-								
+
 							asteroids.remove(i); // 벡터에서 지우기
-							
+
 							break; // 하나 맞췄으니 루프 종료
 						}
 					}
@@ -187,7 +185,7 @@ public class GamePanel extends JPanel {
 		public void paintComponent(Graphics g) {
 			g.setColor(new Color(0, 0, 0, 100)); // 투명도 조절
 			g.fillRect(0, 0, getWidth(), getHeight()); // 패널 채우기
- 
+
 			super.paintComponent(g);
 		}
 
@@ -209,12 +207,12 @@ public class GamePanel extends JPanel {
 			gameFrame.getStartBtn().setVisible(false);
 			gameFrame.getStartBtn().setText("시작");
 
-			set.resumeGame(); 
+			set.resumeGame();
 			pausePanel.setVisible(false); // 숨기기
 
 			inputField.setEnabled(true); // 필드 활성화
 			inputField.requestFocus(); // 포커스 필드에 다시 주기
-			
+
 			// 버튼 활성화
 			gameFrame.getStartBtn().setEnabled(true);
 			gameFrame.getStopBtn().setEnabled(true);
@@ -251,7 +249,7 @@ public class GamePanel extends JPanel {
 		private JButton homeBtn = null;
 
 		public GameOverPanel() {
-			this.setLayout(null); 
+			this.setLayout(null);
 			this.setOpaque(false); // 투명도 설정
 			this.setVisible(false); // 숨기기
 			setSize(700, 800);
@@ -269,7 +267,7 @@ public class GamePanel extends JPanel {
 			scoreLabel.setSize(300, 200);
 			scoreLabel.setLocation(200, 200);
 
-			homeBtn = new JButton("나가기"); 
+			homeBtn = new JButton("나가기");
 			homeBtn.setFont(new Font("Galmuri9", Font.BOLD, 40));
 			homeBtn.setForeground(Color.WHITE);
 			homeBtn.setBackground(Color.DARK_GRAY);
@@ -280,7 +278,7 @@ public class GamePanel extends JPanel {
 			add(scoreLabel);
 			add(homeBtn);
 
-			homeBtn.addActionListener(new ActionListener() { // 나가기 버튼 눌렀을 때 
+			homeBtn.addActionListener(new ActionListener() { // 나가기 버튼 눌렀을 때
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false); // 게임오버패널 비활성화
@@ -315,7 +313,7 @@ public class GamePanel extends JPanel {
 			public void run() {
 				while (true) {
 					try {
-						sleep(100); // 게임오버 0.1초마다 체크 (추가하니까 해결) 
+						sleep(100); // 게임오버 0.1초마다 체크 (추가하니까 해결)
 						if (statusPanel.isGameOver()) {
 							gameOver();
 							break;
