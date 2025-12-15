@@ -66,6 +66,7 @@ public class Asteroid extends Thread {
 					Thread.sleep(100);
 	                continue;
 	            }
+
 				if (isEnd) {
 					soundManager.playSFX("sound/boom2.wav");
 					int prevWidth = imageLabel.getWidth();
@@ -85,8 +86,8 @@ public class Asteroid extends Thread {
 					
 					break;
 				}
-
-				if (y > panel.getHeight()-40) { // panel 끝에 도달하면 종료
+				
+				if (y +imageLabel.getHeight() > panel.getHeight()) { // panel 끝에 도달하면 종료
 					soundManager.playSFX("sound/boom.wav");
 					comboPanel.resetCombo();
 					
