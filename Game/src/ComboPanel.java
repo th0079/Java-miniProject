@@ -14,11 +14,15 @@ public class ComboPanel extends JPanel {
 	private JLabel comboLabel = new JLabel("0", JLabel.CENTER);
 	private ImageIcon bgIcon = new ImageIcon("image/comboBg.png");
 	private Image bgImg = bgIcon.getImage();
+	private ImageIcon burningBgIcon = new ImageIcon("image/burningBg.png");
+	private Image burningBgImg = burningBgIcon.getImage();
 	private SoundManager soundManager = new SoundManager();
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(bgImg, 0, 0, getWidth(), getHeight(), this);
+		
+		Image currentImg = burning ? burningBgImg : bgImg;
+		g.drawImage(currentImg, 0, 0, getWidth(), getHeight(), this);
 	}
 
 	public ComboPanel() {
@@ -31,11 +35,11 @@ public class ComboPanel extends JPanel {
 	public void increaseCombo() {
 		combo++;
 		if (combo >= 5) {
-			if (!burning)
+			if (!burning) {
 				soundManager.playSFX("sound/burningOn.wav");
-			burning = true;
-			
-			
+				burning = true;
+				repaint();
+			}
 		}
 		updateCombo();
 	}
@@ -45,6 +49,7 @@ public class ComboPanel extends JPanel {
 		burning = false;
 		updateCombo();
 		System.out.println("combo reset");
+		repaint();
 	}
 
 	public boolean isBurning() {
