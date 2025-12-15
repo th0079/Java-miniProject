@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 
 public class SetAsteroid {
 	private GamePanel.GroundPanel groundPanel = null;
+	private GamePanel.PausePanel pausePanel = null;
 	private GameFrame gameFrame = null;
 	private StatusPanel statusPanel = null;
 	private ComboPanel comboPanel = null;
@@ -15,19 +16,26 @@ public class SetAsteroid {
 	private ImageIcon blueAsteroidImage = new ImageIcon("image/blueAsteroid.png");
 	private ImageIcon redAsteroidImage = new ImageIcon("image/RedAsteroid.png");
 	private ImageIcon grayAsteroidImage = new ImageIcon("image/GrayAsteroid.png");
+	private ImageIcon alienImage = new ImageIcon("image/alien.png");
+	private JLabel alienText = new JLabel("alien",JLabel.CENTER);
+	private JLabel alienLabel = null;
+	private Asteroid alien = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private SoundManager soundManager = new SoundManager();
 	private boolean stopFlag = false;
 	private boolean reset = false;
+	private boolean isAlienSpawned = false;
 	private AsteroidSpawner asteroidSpawner = null;
 	private int difficulty=0;
 	private int level=1;
 	private int curLev=1;
 	
-	public SetAsteroid(GameFrame gameFrame, GamePanel.GroundPanel groundPanel, 
-			StatusPanel statusPanel, ComboPanel comboPanel, ScorePanel scorePanel, 
+	public SetAsteroid(GameFrame gameFrame, GamePanel.PausePanel pausePanel, 
+			GamePanel.GroundPanel groundPanel, StatusPanel statusPanel, 
+			ComboPanel comboPanel, ScorePanel scorePanel, 
 			TextStore tStore, Vector<Asteroid> asteroids) {
 		this.gameFrame = gameFrame;
+		this.pausePanel = pausePanel;
 		this.groundPanel = groundPanel;
 		this.statusPanel = statusPanel;
 		this.comboPanel = comboPanel;
@@ -64,7 +72,11 @@ public class SetAsteroid {
 		stopFlag = true; // stopFlag 활성화
 		asteroidSpawner.interrupt(); // spawner 스레드 종료
 	}
-
+	
+	public void alienStop() {
+		pausePanel.alienStopThread();
+	}
+	
 	public void resetGame() { // 게임 초기화 메소드
 		System.out.println("소행성 개수 : " + asteroids.size());
 		for (int i=0; i<asteroids.size(); i++) { 
@@ -78,6 +90,7 @@ public class SetAsteroid {
 		asteroids.clear(); // 벡터 초기화
 		System.out.println("소행성 초기화 : " + asteroids.size());
 		reset = true; // reset 상태
+		isAlienSpawned = false;
 	}
 
 	public void resumeGame() { // 게임 재개 메소드 
@@ -99,6 +112,21 @@ public class SetAsteroid {
 
 		switch (level) { // 레벨에 따른 생성 확률 변화
 		case 1: // 레벨1
+			if (!isAlienSpawned) {
+				System.out.println("외계인 생성");
+				alienLabel = new JLabel(alienImage);
+				alienLabel.setSize(150,150);
+				alien = new Alien(groundPanel, x, alienText, alienLabel);
+				
+				alienText.setSize(200, 30);
+		        alienText.setFont(font);         
+		        groundPanel.add(alienText);      
+		        groundPanel.add(alienLabel);     
+		        asteroids.add(alien);            
+		        alien.start();
+		        
+		        isAlienSpawned = true;
+			}
 			if (rand < 0.9) { // 90% 
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
@@ -111,6 +139,7 @@ public class SetAsteroid {
 			break;
 
 		case 2: // 레벨2 (500점 달성 시)
+			
 			if (rand < 0.7) { // 70%
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
@@ -123,11 +152,12 @@ public class SetAsteroid {
 			break;
  
 		case 3: // 레벨3 (1000점 달성 시)
-			if (rand < 0.4) { // 60%
+			
+			if (rand < 0.6) { // 60%
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			} else if (rand < 0.7) { // 30%
+			} else if (rand < 0.9) { // 30%
 				imageLabel = new JLabel(redAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);

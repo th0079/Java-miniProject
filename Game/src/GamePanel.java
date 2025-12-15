@@ -31,7 +31,8 @@ public class GamePanel extends JPanel {
 	private SetAsteroid set = null;
 	private Font font = new Font("Galmuri9", Font.BOLD, 20);
 	private SoundManager soundManager = new SoundManager();
-
+	private boolean alienStop;
+	
 	public GamePanel(GameFrame gameFrame, ScorePanel scorePanel, ComboPanel comboPanel, StatusPanel statusPanel,
 			TextStore tStore) {
 		this.gameFrame = gameFrame;
@@ -39,6 +40,7 @@ public class GamePanel extends JPanel {
 		this.scorePanel = scorePanel;
 		this.comboPanel = comboPanel;
 		this.statusPanel = statusPanel;
+		alienStop = false;
 		
 		inputField.setFont(font);
 
@@ -53,7 +55,7 @@ public class GamePanel extends JPanel {
 		gameOverPanel.setBounds(0, 0, 700, 800);
 		pausePanel.setBounds(0, 0, 700, 800);
 
-		set = new SetAsteroid(gameFrame, groundPanel, statusPanel, comboPanel, scorePanel, tStore, asteroids);
+		set = new SetAsteroid(gameFrame, pausePanel, groundPanel, statusPanel, comboPanel, scorePanel, tStore, asteroids);
 	}
 
 	public void startGame() { // 게임 시작 메소드
@@ -67,8 +69,10 @@ public class GamePanel extends JPanel {
 
 	public void stopGame() { // 일시정지 메소드
 		set.stopGame(); // setAsteroid stopGame() 호출
-		pausePanel.setVisible(true);
-		inputField.setEnabled(false); // 비활성화
+		if(!alienStop) {
+			pausePanel.setVisible(true);
+			inputField.setEnabled(false); // 비활성화
+		}
 	}
 
 	public void resumeGame() { // 재개 메소드
@@ -90,7 +94,7 @@ public class GamePanel extends JPanel {
 		inputField.setEnabled(true); // 입력 활성화
 		set.resetGame(); // setAsteroid의 resetGame 호출
 	}
-
+	
 	class GroundPanel extends JPanel { // 게임이 진행되는 패널
 		private ImageIcon bgIcon = new ImageIcon("image/background.jpg");
 		private Image bgImg = bgIcon.getImage();
@@ -224,7 +228,6 @@ public class GamePanel extends JPanel {
 
 		class WaitThread extends Thread { // 2초 대기 스레드
 			private int count = 2;
-
 			@Override
 			public void run() {
 				while (true) {
@@ -241,6 +244,33 @@ public class GamePanel extends JPanel {
 				}
 				waitAndStart(); // 게임 시작
 			}
+		}
+		
+		class StopThread extends Thread { // 외계인 요격 시 5초 정지
+			private int count = 5;
+			@Override
+			public void run() {
+				alienStop = true;
+				stopGame();
+				while (true) {
+					if (count == 0) // 5초 후 종료
+						break;
+					try {
+						sleep(1000); // 1초 대기
+						count--;
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				alienStop = false;
+				set.resumeGame();
+			}
+		}
+		
+		public void alienStopThread() {
+			StopThread th = new StopThread();
+			th.start();
 		}
 	}
 
@@ -291,7 +321,7 @@ public class GamePanel extends JPanel {
 				}
 			});
 		}
-
+		
 		public void threadStart() { // 게임 오버 감시 스레드 시작
 			GameOverThread th = new GameOverThread();
 			th.start();

@@ -18,6 +18,8 @@ public class Asteroid extends Thread {
 	private SetAsteroid set = null;
 	private SoundManager soundManager = new SoundManager();
 	private ComboPanel comboPanel = null;
+	private double randX, randY;
+	private boolean isAlienMoved;
 	
 	public Asteroid(GamePanel.GroundPanel panel, double x, JLabel text) {
 		this.panel = panel;
@@ -27,6 +29,7 @@ public class Asteroid extends Thread {
 		this.text.setForeground(Color.white);
 		set = panel.getSetAsteroid();
 		comboPanel = set.getComboPanel();
+		isAlienMoved = false;
 	}
 
 	public String getText() {
@@ -56,18 +59,41 @@ public class Asteroid extends Thread {
 		int textY = (int) y + imageLabel.getHeight()-5;
 		text.setLocation(textX, textY);
 	}
-
+	public void move() { // 외계인 이동
+		if (y <50 && !isAlienMoved) {
+			y+=speed;
+			if (y == 50) isAlienMoved = true;
+		}
+		else {
+			if (Math.random() < 0.1) { // 10% 확률로 프레임마다 x,y 변경
+				randX = speed*(Math.random()*4-2);
+				randY = speed*(Math.random()*4-2);
+			}
+			x+=randX;
+			y+=randY;
+			
+			// 화면 벗어나지 못하게
+			if (x < 50) x = 50;
+	        if (x > 600) x = 600;
+	        if (y <0) y =0;
+	        if (y > 500) y = 500;   
+		}
+		
+		imageLabel.setLocation((int) x, (int) y);
+		int textX = (int) x + (imageLabel.getWidth() - text.getWidth()) / 2;
+		int textY = (int) y + imageLabel.getHeight()-50;
+		text.setLocation(textX, textY);
+	}
+	
 	@Override
 	public void run() { 
 		try {
 			while (true) {
+//				panel.repaint();
+				
 				if (set.checkReset()) break; // 게임이 리셋 되었으면 종료
-				if (set.getStopFlag()) { // 게임 일시정지 시 대기
-					Thread.sleep(100);
-	                continue;
-	            }
-
-				if (isEnd) {
+				
+				if (isEnd) { // 요격 됐을 시
 					soundManager.playSFX("sound/boom2.wav");
 					int prevWidth = imageLabel.getWidth();
 					imageLabel.setIcon(explosionImg2);
@@ -84,9 +110,20 @@ public class Asteroid extends Thread {
 					Thread.sleep(100);
 					panel.remove(imageLabel);
 					
+					if (damage==0) {
+						set.alienStop();
+					}
+					
+					panel.repaint();
+					
 					break;
 				}
 				
+				if (set.getStopFlag()) { // 게임 일시정지 시 대기
+					Thread.sleep(100);
+	                continue;
+	            }
+
 				if (y +imageLabel.getHeight() > panel.getHeight()) { // panel 끝에 도달하면 종료
 					soundManager.playSFX("sound/boom.wav");
 					comboPanel.resetCombo();
@@ -106,8 +143,9 @@ public class Asteroid extends Thread {
 					panel.remove(imageLabel);
 					break;
 				}
+				if(damage==0) move(); // 외계인
+				else fall(); // 떨어짐
 				
-				fall(); // 떨어짐
 				panel.repaint(); // 다시 그려주기 
 				Thread.sleep(100); // 0.1초마다 갱신
 			}
@@ -147,6 +185,16 @@ class GrayAsteroid extends Asteroid {
 		this.score = 50;
 		this.speed = 2;
 		this.damage = 30;
+		this.imageLabel = imageLabel;
+	}
+}
+
+class Alien extends Asteroid {
+	public Alien(GamePanel.GroundPanel panel, double x, JLabel text, JLabel imageLabel) {
+		super(panel, x, text);
+		this.score = 0;
+		this.speed = 5;
+		this.damage = 0;
 		this.imageLabel = imageLabel;
 	}
 }
