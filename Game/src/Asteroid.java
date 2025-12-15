@@ -11,8 +11,8 @@ public class Asteroid extends Thread {
 	protected int speed; // 소행성 속도
 	private boolean isEnd = false;
 	protected JLabel imageLabel; // 소행성 이미지
-	private ImageIcon explosionImg = new ImageIcon("image/explosion.png");
-	private ImageIcon explosionImg2 = new ImageIcon("image/explosion2.png");
+	private ImageIcon explosionImg = new ImageIcon("image/explosion.png"); // 지구에 닿았을 때
+	private ImageIcon explosionImg2 = new ImageIcon("image/explosion2.png"); // 요격했을 때
 	private GamePanel.GroundPanel panel;
 	private JLabel text;
 	private SetAsteroid set = null;

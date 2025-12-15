@@ -36,27 +36,23 @@ public class SetAsteroid {
 		this.asteroids = asteroids;
 	}
 
-	public boolean checkReset() {
+	public boolean checkReset() { // 
 		return reset;
 	}
-	public boolean getStopFlag() {
+	public boolean getStopFlag() { // 일시정지 상태 반환
 		return stopFlag;
 	}
 	public ComboPanel getComboPanel() {
 		return comboPanel;
 	}
-	public void setDifficulty(int difficulty) {
+	public void setDifficulty(int difficulty) { // 난이도 받아오기
 		this.difficulty = difficulty;
 	}
 	public void startGame() { // 게임 시작 메소드
 		stopFlag = false; // stopFlag 비활성화
 		reset = false; // reset 비활성화
 		
-		int score = scorePanel.getScore();
-		if (score <500) level = 1;
-		else if (score < 1000) level = 2;
-		else level = 3;
-		gameFrame.setLevel(level);
+		gameFrame.setLevel(1); // 레벨 1단계부터 시작
 		
 		asteroidSpawner = new AsteroidSpawner(); // 소행성 spawner 스레드
 		asteroidSpawner.start(); // 소행성 생성 시작
@@ -74,8 +70,8 @@ public class SetAsteroid {
 		for (int i=0; i<asteroids.size(); i++) { 
 			Asteroid a = asteroids.get(i);
 			a.interrupt(); // 실행 중인 asteroid 스레드 종료
-			groundPanel.remove(a.getLabel());
-			groundPanel.remove(a.getImageLabel());
+			groundPanel.remove(a.getLabel()); // 화면의 소행성 제거
+			groundPanel.remove(a.getImageLabel()); // 화면의 소행성 제거
 		}
 		asteroidSpawner.interrupt(); // spawner 스레드 종료
 		groundPanel.repaint(); // 다시 그리기
@@ -127,11 +123,11 @@ public class SetAsteroid {
 			break;
  
 		case 3: // 레벨3 (1000점 달성 시)
-			if (rand < 0.6) { // 60%
+			if (rand < 0.4) { // 60%
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			} else if (rand < 0.9) { // 30%
+			} else if (rand < 0.7) { // 30%
 				imageLabel = new JLabel(redAsteroidImage);
 				imageLabel.setSize(80, 80);
 				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
@@ -145,21 +141,19 @@ public class SetAsteroid {
 			}
 			break;
 		}
-		if (level > curLev) {
-			soundManager.playSFX("sound/levelUp.wav");
-			curLev = level;
+		if (level > curLev) { // 레벨 상승 시
+			soundManager.playSFX("sound/levelUp.wav"); // 레벨 상승 소리 재생
+			curLev = level; // curLev 수정 
 			System.out.println("레벨: " + curLev);
 		}
-		text.setSize(200, 30);
 		
-//		text.setLocation(x,-100);
-//		imageLabel.setLocation(x, -100);
+		text.setSize(200, 30);
 		
 		groundPanel.add(text);
 		groundPanel.add(imageLabel);
 
 		asteroids.add(asteroid); // 벡터에 추가 
-		asteroid.start(); // 스레드 시작
+		asteroid.start(); // 소행성 스레드 시작
 	}
 
 	class AsteroidSpawner extends Thread { // 소행성 생성 스레드
@@ -170,13 +164,13 @@ public class SetAsteroid {
 				while (true) {
 					if (reset) // reset 상태면 종료
 						return;
-					int score = scorePanel.getScore();
-					if (score <500) level = 1;
-					else if (score < 1000) level = 2;
-					else level = 3;
+					int score = scorePanel.getScore(); // 점수 가져오기
+					if (score <200) level = 1; // 500 미만 레벨 1
+					else if (score < 500) level = 2; // 1000 미만 레벨 2
+					else level = 3; // 1000 이상 레벨 3
 					
-					gameFrame.setLevel(level);
-					spawnAsteroid(level); // level에 맞게 소환
+					gameFrame.setLevel(level); // 출력할 레벨 보내기
+					spawnAsteroid(level); // 레벨에 맞게 소환
 					Thread.sleep(2000-difficulty*(100+difficulty*50)); // 난이도 높을수록 더 빨리 소환 (쉬움:2초, 중간:1.85초, 어려움:1.6초)
 				}
 			} catch (InterruptedException e) {
@@ -186,13 +180,13 @@ public class SetAsteroid {
 	}
 
 	public void destroyAsteroid(Asteroid a) {
-	    if (reset || !asteroids.contains(a)) return;
+	    if (reset || !asteroids.contains(a)) return; // reset이거나 벡터에 없으면 종료
     
-	    asteroids.remove(a);
+	    asteroids.remove(a); // 벡터에서 제거
 
-	    statusPanel.damaged(a.damage);
-	    System.out.println("지구에게 " + a.damage + "데미지");
+	    statusPanel.damaged(a.damage); // a의 데미지만큼 지구에 데미지
+	    System.out.println("지구에게 " + a.damage + "데미지"); 
 	    
-	    groundPanel.repaint();
+	    groundPanel.repaint(); // 화면 다시 그리기
 	}
 }

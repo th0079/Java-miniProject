@@ -7,6 +7,7 @@ import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
 	private static Clip bgmClip;
+	private static float bgmVolume = 0.0f;
 	private static float sfxVolume = 0.0f;
 	
 	public void playBGM(String name) {
@@ -15,6 +16,10 @@ public class SoundManager {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
 			bgmClip = AudioSystem.getClip();
 			bgmClip.open(audioInputStream);
+			
+			FloatControl volumeControl = (FloatControl) bgmClip.getControl(FloatControl.Type.MASTER_GAIN);
+			volumeControl.setValue(bgmVolume);
+			
 			bgmClip.loop(Clip.LOOP_CONTINUOUSLY);
 			bgmClip.start();
 		} catch (Exception e) {
@@ -43,11 +48,10 @@ public class SoundManager {
 	}
 	
 	public void setBGMVolume(int value) {
-		float volume;
 		FloatControl volumeControl = (FloatControl) bgmClip.getControl(FloatControl.Type.MASTER_GAIN);
-		if (value <= 0) volume = -80.0f; // 음소거
-		else volume = (float) (Math.log10(value / 100.0) * 20.0);
-		volumeControl.setValue(volume);
+		if (value <= 0) bgmVolume = -80.0f; // 음소거
+		else bgmVolume = (float) (Math.log10(value / 100.0) * 20.0);
+		volumeControl.setValue(bgmVolume);
 	}
 	
 	public void setSFXVolume(int value) {

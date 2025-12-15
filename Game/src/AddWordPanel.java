@@ -59,6 +59,7 @@ public class AddWordPanel extends JPanel {
 		add(wordField);
 		add(addBtn);
 		add(scrollPane);
+		
 		addKeyListener(new ExitESC());
 		wordField.addKeyListener(new ExitESC());
 		
@@ -147,7 +148,7 @@ public class AddWordPanel extends JPanel {
 		public void keyPressed(KeyEvent e) {
 			int code = e.getKeyCode();
 			switch (code) {
-			case KeyEvent.VK_ESCAPE:
+			case KeyEvent.VK_ESCAPE: // esc일 경우
 				addWord.setVisible(false);
 			}
 		}
