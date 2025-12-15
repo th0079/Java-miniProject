@@ -89,7 +89,7 @@ public class Asteroid extends Thread {
 	public void run() { 
 		try {
 			while (true) {
-//				panel.repaint();
+				panel.repaint();
 				
 				if (set.checkReset()) break; // 게임이 리셋 되었으면 종료
 				

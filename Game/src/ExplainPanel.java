@@ -82,12 +82,13 @@ public class ExplainPanel extends JPanel{
 		ex10.setSize(400,50);
 		add(ex10);
 		setVisible(true);
-//		JLabel ex11 = new JLabel(" 일시정지 버튼으로 정지할 수 있음");
-//		ex11.setFont(font);
-//		ex11.setForeground(Color.WHITE);
-//		ex11.setSize(400,50);
-//		add(ex11);
-//		setVisible(true);
+		
+		JLabel ex11 = new JLabel(" 외계인을 요격하면 5초간 소행성이 멈춘다.");
+		ex11.setFont(font);
+		ex11.setForeground(Color.WHITE);
+		ex11.setSize(400,50);
+		add(ex11);
+		setVisible(true);
 	}
 	
 	@Override

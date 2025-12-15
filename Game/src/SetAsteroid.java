@@ -112,6 +112,30 @@ public class SetAsteroid {
 
 		switch (level) { // 레벨에 따른 생성 확률 변화
 		case 1: // 레벨1
+			if (rand < 0.9) { // 90% 
+				imageLabel = new JLabel(blueAsteroidImage);
+				imageLabel.setSize(80, 80);
+				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
+			} else { // 10%
+				imageLabel = new JLabel(redAsteroidImage);
+				imageLabel.setSize(80, 80);
+				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
+			}
+			break;
+
+		case 2: // 레벨2 (500점 달성 시)
+			if (rand < 0.7) { // 70%
+				imageLabel = new JLabel(blueAsteroidImage);
+				imageLabel.setSize(80, 80);
+				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
+			} else { // 30%
+				imageLabel = new JLabel(redAsteroidImage);
+				imageLabel.setSize(80, 80);
+				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
+			}
+			break;
+ 
+		case 3: // 레벨3 (1000점 달성 시)
 			if (!isAlienSpawned) {
 				System.out.println("외계인 생성");
 				alienLabel = new JLabel(alienImage);
@@ -127,32 +151,6 @@ public class SetAsteroid {
 		        
 		        isAlienSpawned = true;
 			}
-			if (rand < 0.9) { // 90% 
-				imageLabel = new JLabel(blueAsteroidImage);
-				imageLabel.setSize(80, 80);
-				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			} else { // 10%
-				imageLabel = new JLabel(redAsteroidImage);
-				imageLabel.setSize(80, 80);
-				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
-			}
-			break;
-
-		case 2: // 레벨2 (500점 달성 시)
-			
-			if (rand < 0.7) { // 70%
-				imageLabel = new JLabel(blueAsteroidImage);
-				imageLabel.setSize(80, 80);
-				asteroid = new BlueAsteroid(groundPanel, x, text, imageLabel);
-			} else { // 30%
-				imageLabel = new JLabel(redAsteroidImage);
-				imageLabel.setSize(80, 80);
-				asteroid = new RedAsteroid(groundPanel, x, text, imageLabel);
-			}
-			break;
- 
-		case 3: // 레벨3 (1000점 달성 시)
-			
 			if (rand < 0.6) { // 60%
 				imageLabel = new JLabel(blueAsteroidImage);
 				imageLabel.setSize(80, 80);
