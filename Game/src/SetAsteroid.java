@@ -193,8 +193,8 @@ public class SetAsteroid {
 					if (reset) // reset 상태면 종료
 						return;
 					int score = scorePanel.getScore(); // 점수 가져오기
-					if (score <200) level = 1; // 500 미만 레벨 1
-					else if (score < 500) level = 2; // 1000 미만 레벨 2
+					if (score <500) level = 1; // 500 미만 레벨 1
+					else if (score < 1000) level = 2; // 1000 미만 레벨 2
 					else level = 3; // 1000 이상 레벨 3
 					
 					gameFrame.setLevel(level); // 출력할 레벨 보내기

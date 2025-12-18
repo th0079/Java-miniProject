@@ -189,6 +189,7 @@ class GrayAsteroid extends Asteroid {
 	}
 }
 
+// 외계인
 class Alien extends Asteroid {
 	public Alien(GamePanel.GroundPanel panel, double x, JLabel text, JLabel imageLabel) {
 		super(panel, x, text);
